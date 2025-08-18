@@ -74,7 +74,7 @@ void render_test_screen(t_game *game)
 int key_press(int keycode, t_game *game)
 {
 	
-	if (keycode == 53) // ESC su macOS (era 65307 che è Linux)
+	if (keycode == 65307) // ESC su macOS (era 65307 che è Linux)
 	{
 		printf("ESC pressed, closing game...\n");
 		free_game(game);

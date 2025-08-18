@@ -9,7 +9,8 @@
 #include <sys/time.h>
 #include <sys/stat.h>  // Per stat() in texture_check.c
 #include <math.h>
-#include "../mlx/mlx.h"
+#include "../mlx_linux/mlx.h"
+// #include "../mlx_apple/mlx.h"
 
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
