@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:27:47 by edforte           #+#    #+#             */
-/*   Updated: 2025/06/03 13:39:11 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/18 20:03:23 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int parse_map(char *map_path, t_game *game)
 	// Parsa file e popola map + player
 	if (parse_complete_file(map_path, &game->map, &game->player) != 0)
 	{
-		printf("Error\nInvalid map file\n");
 		return (1);
 	}
 	

@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:24:27 by edforte           #+#    #+#             */
-/*   Updated: 2025/06/03 13:39:33 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/18 19:13:37 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,10 @@ int parse_complete_file(char *map_path, t_map *map, t_player *player)
 	
 	if (validate_file_access(map_path))
 		return (1);
-	
 	// Leggi file
 	line_count = count_file_lines(map_path);
 	if (line_count <= 0)
-		return (1);
+		return (printf("Error\nInvalid map file\n"), 1);
 	
 	lines = read_file_lines(map_path, line_count);
 	if (!lines)

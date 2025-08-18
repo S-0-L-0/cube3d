@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	// VALIDAZIONE INPUT: Deve essere fornito esattamente un file .cub
 	if (argc != 2)
 	{
-		printf("Error\nUsage: ./cub3D <map.cub>\n");
+		printf("Error\nmissing .cub maps file");
 		return (1);
 	}
 	

@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:23:55 by edforte           #+#    #+#             */
-/*   Updated: 2025/06/03 14:27:29 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/18 20:02:08 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ int parse_map_grid(char **lines, int start_line, t_map *map, t_player *player)
 		printf("Error\nInvalid parameters for map parsing\n");
 		return (1);
 	}
-	
+
 	// Salta eventuali righe vuote subito dopo gli elementi
 	while (lines[start_line])
 	{
@@ -287,10 +287,10 @@ int parse_map_grid(char **lines, int start_line, t_map *map, t_player *player)
 		// Se non è vuota, inizia la mappa qui
 		if (lines[start_line][j] != '\n' && lines[start_line][j] != '\0')
 			break;
-		
+					
 		start_line++;
 	}
-	
+
 	if (!lines[start_line])
 	{
 		printf("Error\nNo valid map found after elements\n");

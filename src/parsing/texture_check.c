@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:42:20 by edforte           #+#    #+#             */
-/*   Updated: 2025/06/03 13:40:05 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/18 19:01:57 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int parse_texture(char *line, char **texture_path)
 	
 	if (!line || !texture_path)
 	{
-		printf("Error: Invalid parameters for texture parsing\n");
+		printf("Error\nInvalid parameters for texture parsing\n");
 		return (1);
 	}
 		
 	if (*texture_path) // Texture già assegnata (duplicato)
 	{
-		printf("Error: Duplicate texture definition\n");
+		printf("Error\nDuplicate texture definition\n");
 		return (1);
 	}
 	
@@ -56,7 +56,7 @@ int parse_texture(char *line, char **texture_path)
 	
 	if (strlen(path) == 0)
 	{
-		printf("Error: Empty texture path\n");
+		printf("Error\nEmpty texture path\n");
 		return (1);
 	}
 	
@@ -64,7 +64,7 @@ int parse_texture(char *line, char **texture_path)
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error: Cannot access texture file: %s\n", path);
+		printf("Error\nCannot access texture file: %s\n", path);
 		return (1);
 	}
 	close(fd);
@@ -72,21 +72,21 @@ int parse_texture(char *line, char **texture_path)
 	// Verifica che sia un file regolare (non una directory)
 	if (!is_regular_file(path))
 	{
-		printf("Error: Texture path is not a regular file: %s\n", path);
+		printf("Error\nTexture path is not a regular file: %s\n", path);
 		return (1);
 	}
 	
 	// Verifica che abbia estensione .xpm
 	if (!validate_xpm_extension(path))
 	{
-		printf("Error: Texture file must have .xpm extension: %s\n", path);
+		printf("Error\nTexture file must have .xpm extension: %s\n", path);
 		return (1);
 	}
 	
 	*texture_path = strdup(path);
 	if (!*texture_path)
 	{
-		printf("Error: Memory allocation failed for texture path\n");
+		printf("Error\nMemory allocation failed for texture path\n");
 		return (1);
 	}
 	
