@@ -1,43 +1,43 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: edforte <edforte@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/08/07 16:31:02 by edforte           #+#    #+#              #
-#    Updated: 2025/05/19 20:16:17 by edforte          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 NAME = cub3d
 
 CFILES = \
-			main.c \
-			
+			src/main.c \
+			src/parsing/file_check.c \
+			src/parsing/init_struct.c \
+			src/parsing/map_check.c \
+			src/parsing/rgb_check.c \
+			src/parsing/texture_check.c \
+			src/parsing/parse_map.c \
+			src/game/game_loop.c \
+			src/utils/get_next_line.c \
 
 OBJ = $(CFILES:.c=.o)
-CC = @ gcc
-FLAGS = -g -Wall -Wextra -Werror
-RM = rm -rf
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+INCLUDES = -I./includes -I./mlx
+LIBS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm
+RM = rm -f
 
+# Regola per compilare i file .o
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+.PHONY: all clean fclean re
 
-name : $(NAME)
+all: $(NAME)
 
-all : $(NAME)
-
-$(NAME) : $(OBJ)
+# Compila MLX prima, poi il programma
+$(NAME): $(OBJ)
 	@make -C ./mlx
-	$(NAME): $(OBJ)
-	$(CC) $(OBJ) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(OBJ) $(LIBS) -o $(NAME)
 
-clean :
-	@ $(RM) $(OBJ)
+clean:
+	$(RM) $(OBJ)
 
-fclean : clean
-	@ $(RM) $(NAME)
 
-re : fclean all
+fclean: clean
+	$(RM) $(NAME)
+
+
+re: fclean all

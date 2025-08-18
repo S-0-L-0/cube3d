@@ -1,0 +1,130 @@
+🎯 FLUSSO COMPLETO DATI CUB3D
+📋 STEP-BY-STEP EXECUTION FLOW
+┌─────────────────┐
+│     MAIN()      │ <- Punto di ingresso
+│                 │
+│ 1. Valida args  │
+│ 2. init_game()  │ <- Azzera t_game
+│ 3. parse_map()  │ <- ORCHESTRATORE PRINCIPALE
+│ 4. game_loop()  │ <- Loop infinito
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│   PARSE_MAP()   │ <- Coordinatore parsing + setup
+│                 │
+│ A. parse_complete_file() <- RIEMPIE map + player
+│ B. init_mlx()           <- RIEMPIE mlx
+│ C. init_texture() x4    <- RIEMPIE textures[4]
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│PARSE_COMPLETE() │ <- Parsing principale file .cub
+│                 │
+│ 1. Valida file  │
+│ 2. read_lines() │ <- Legge tutto in memoria
+│ 3. parse_elements() <- Estrae texture+colori
+│ 4. parse_map_grid() <- Costruisce griglia
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│PARSE_MAP_GRID() │ <- Costruzione griglia + validazione
+│                 │
+│ 1. find_map_start()     <- Trova prima riga '1'/'0'
+│ 2. validate_no_empty()  <- No righe vuote in mappa
+│ 3. alloca grid[h][w]    <- Memoria per griglia
+│ 4. riempie griglia      <- Copia caratteri dal file
+│ 5. find_player()        <- Estrae posizione N/S/E/W
+│ 6. flood_fill()         <- VALIDAZIONE CRITICA
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│   GAME_LOOP()   │ <- Loop infinito rendering + eventi
+│                 │
+│ 1. render_frame() <- Disegna usando game->map.colors
+│ 2. mlx_hook()     <- Gestisce eventi tastiera
+│ 3. mlx_loop()     <- Ciclo infinito 60fps
+│                   │
+│ USCITA: ESC -> free_game() -> exit()
+└─────────────────┘
+
+🗂️ STRUTTURE DATI E LORO POPOLAMENTO
+t_game (Struttura principale)
+ctypedef struct s_game {
+    t_map map;            // ⬅️ Riempita da parse_complete_file()
+    t_player player;      // ⬅️ Riempita da find_and_validate_player()
+    t_mlx mlx;            // ⬅️ Riempita da init_mlx()
+    t_texture textures[4]; // ⬅️ Riempita da init_texture() x4
+} t_game;
+t_map (Dati mappa)
+ctypedef struct s_map {
+    char **grid;          // ⬅️ Allocata e riempita in parse_map_grid()
+    int width, height;    // ⬅️ Calcolate da calculate_map_dimensions()
+    char *north_texture;  // ⬅️ Estratte da parse_file_elements()
+    char *south_texture;  // ⬅️ (parse_texture() per ogni direzione)
+    char *west_texture;   //
+    char *east_texture;   //
+    int floor_color[3];   // ⬅️ Estratti da parse_rgb_color()
+    int ceiling_color[3]; //
+} t_map;
+t_player (Posizione e orientamento)
+ctypedef struct s_player {
+    double pos_x, pos_y;  // ⬅️ Calcolate da find_and_validate_player()
+    double dir_x, dir_y;  // ⬅️ Impostate in base a direzione N/S/E/W
+    double plane_x, plane_y; // ⬅️ Piano camera per raycasting futuro
+    char direction;       // ⬅️ Carattere originale dal file (N/S/E/W)
+} t_player;
+
+🔄 CICLO VITA MEMORIA
+ALLOCAZIONE (Durante parsing)
+
+char **lines ← Array di righe file (temporaneo)
+map->grid[height][width] ← Griglia 2D permanente
+map->*_texture ← Path delle texture (stringhe)
+mlx->mlx, win, img ← Strutture grafiche MLX
+textures[4]->img ← Immagini texture caricate
+
+UTILIZZO (Durante game loop)
+
+map->grid ← Letta per collisioni e raycasting
+map->colors ← Usati per rendering soffitto/pavimento
+player->pos_* ← Aggiornati per movimento
+textures ← Utilizzate per rendering pareti
+mlx->addr ← Buffer pixel manipolato direttamente
+
+DEALLOCAZIONE (free_game())
+c// ORDINE CRITICO:
+1. mlx_destroy_image(textures) // Libera texture GPU
+2. free(map->grid[i])          // Libera ogni riga griglia
+3. free(map->texture_paths)    // Libera path stringhe
+4. mlx_destroy_image(mlx->img) // Libera buffer principale
+5. mlx_destroy_window()        // Chiude finestra
+6. free(mlx->mlx)              // Disconnette server grafico
+
+⚡ PUNTI CRITICI DEL FLUSSO
+🔍 VALIDAZIONE FLOOD FILL
+QUANDO: Dopo costruzione griglia, prima di avviare rendering
+COSA: Partendo da posizione player, esplora ricorsivamente tutte le aree raggiungibili
+PERCHÉ: Garantisce che player non possa mai "uscire" dalla mappa o raggiungere spazi aperti
+🎮 GAME LOOP INFINITO
+QUANDO: Dopo che tutte le strutture sono popolATE
+COSA: Ciclo continuo di rendering + gestione eventi
+MEMORIA: Tutte le strutture rimangono in memoria per accesso continuo
+🧹 CLEANUP ORDINATO
+QUANDO: Prima di ogni exit() (normale o errore)
+COSA: Liberazione memoria in ordine preciso per evitare crash
+CRITICO: MLX richiede ordine specifico per deallocazione sicura
+
+
+
+
+
+
+
+
+
+
+
