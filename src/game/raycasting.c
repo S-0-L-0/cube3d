@@ -26,52 +26,40 @@ void draw_circle(t_game *game, int cx, int cy, int radius, int color)
 	}
 }
 
-void    draw_map_2d(t_game *game)
+void	draw_map_2d(t_game *game)
 {
-    int map_x; 
-    int map_y;
-    int screen_x;
-    int screen_y;
-    char cell;
+	int	map_x; 
+	int	map_y;
+	int	screen_x;
+	int	screen_y;
 
-    // Prima di tutto, puliamo lo schermo (o la zona della minimappa)
-    // con un colore di sfondo, così non abbiamo "buchi" neri.
-    // Questa parte è opzionale ma consigliata.
-    for (int i = 0; i < game->map.height * 32; i++)
-        for (int j = 0; j < game->map.width * 32; j++)
-            put_pixel(game, j, i, 0x000000); // Sfondo nero
-
-    map_y = 0;
-    while (map_y < game->map.height)
-    {
-        map_x = 0;
-        while (map_x < game->map.width)
-        {
-            cell = game->map.grid[map_y][map_x]; // Leggiamo il carattere una volta sola
-
-            int color = -1; // -1 significa "non disegnare"
-
-            if (cell == '1')
-                color = 0x808080; // Grigio per i muri
-            else if (cell == '0' || cell == 'N' || cell == 'S' || cell == 'E' || cell == 'W')
-                color = 0xFFFFFF; // Bianco per il pavimento e la posizione del player
-
-            if (color != -1) // Disegniamo solo se abbiamo un colore valido
-            {
-                for (screen_y = 0; screen_y < 32; screen_y++)
-                {
-                    for (screen_x = 0; screen_x < 32; screen_x++)
-                    {
-                        int pixel_x = map_x * 32 + screen_x;
-                        int pixel_y = map_y * 32 + screen_y;
-                        put_pixel(game, pixel_x, pixel_y, color);
-                    }
-                }
-            }
-            map_x++;
-        }
-        map_y++;
-    }
+	map_y = 0;
+	while (map_y < game->map.height)
+	{
+		map_x = 0;
+		while (map_x < game->map.width)
+		{
+			screen_x = 0;
+			while (screen_x < 32)
+			{
+				screen_y = 0;
+				while (screen_y < 32)
+				{
+					int pixel_x = map_x * 32 + screen_x;
+					int pixel_y = map_y * 32 + screen_y;
+					
+					if (game->map.grid[map_y][map_x] == '1')
+						put_pixel(game, pixel_x, pixel_y, 0x000000);
+					else
+						put_pixel(game, pixel_x, pixel_y, 0xFFFFFF);
+					screen_y++;
+				}
+				screen_x++;
+			}
+			map_x++;
+		}
+		map_y++;
+	}
 }
 
 void	draw_player_2d(t_game *game)

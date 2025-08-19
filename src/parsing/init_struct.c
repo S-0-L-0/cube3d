@@ -141,8 +141,8 @@ int init_mlx(t_mlx *mlx)
 	// Azzera la struttura
 	memset(mlx, 0, sizeof(t_mlx));
 	
-	mlx->win_width = 1920;
-	mlx->win_height = 1080;
+	mlx->win_width = 800;
+	mlx->win_height = 600;
 	
 	mlx->mlx = mlx_init();
 	if (!mlx->mlx)
