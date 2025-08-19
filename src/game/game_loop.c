@@ -81,6 +81,24 @@ int key_press(int keycode, t_game *game)
 		exit(0);
 	}
 	// Altri tasti per test
+	else if (keycode == 119) // W
+	{
+		printf("W pressed\n");
+	}
+	else if (keycode == 115) // S
+	{
+		printf("S pressed\n");
+	}
+	else if (keycode == 97) // A
+	{
+		printf("A pressed\n");
+	}
+	else if (keycode == 100) // D
+	{
+		printf("D pressed\n");
+	}
+
+/*	APPLE
 	else if (keycode == 13) // W
 	{
 		printf("W pressed\n");
@@ -97,7 +115,7 @@ int key_press(int keycode, t_game *game)
 	{
 		printf("D pressed\n");
 	}
-	
+*/	
 	return (0);
 }
 
@@ -116,6 +134,31 @@ int render_frame(t_game *game)
 	return (0);
 }
 
+void	draw_2d(t_game *game)
+{
+	int	x;
+	int ray_count = 60;
+
+	x = 0;
+	draw_map_2d(game);
+	draw_player_2d(game);
+//	draw_minimap();
+	
+	while (x < ray_count)
+	{
+		draw_ray_2d(game, x * (game->mlx.win_width / ray_count));
+		x++;
+	}
+}
+
+int sd_loop(t_game *game)
+{
+	draw_2d(game);
+	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
+	return (0);
+}
+
+
 int game_loop(t_game *game)
 {
 	printf("Starting game loop...\n");
@@ -124,13 +167,14 @@ int game_loop(t_game *game)
 	printf("Map size: %dx%d\n", game->map.width, game->map.height);
 	
 	// Renderizza il primo frame
-	render_test_screen(game);
+	//render_test_screen(game);
 	
 	// Imposta event handlers
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);          // Key press
 	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);     // Window close
-	mlx_loop_hook(game->mlx.mlx, render_frame, game);              // Rendering continuo
-	
+	//mlx_loop_hook(game->mlx.mlx, render_frame, game);            // Rendering continuo
+	mlx_loop_hook(game->mlx.mlx, sd_loop, game);                 // raycasting 2d
+
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
 	
 	// Avvia loop

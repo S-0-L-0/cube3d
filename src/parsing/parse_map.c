@@ -12,6 +12,16 @@
 
 #include "../includes/cub3d.h"
 
+void	init_player(t_game *game)
+{
+	game->player.pos_x = 5.0;
+	game->player.pos_y = 5.0;
+	game->player.dir_x = -1.0; // left
+	game->player.dir_y = 0.0; // center
+	game->player.plane_x = 0.0;
+	game->player.plane_y = 0.66; // FOV
+}
+
 /*
  * STEP 2: ORCHESTRATORE PARSING + SETUP GRAFICO
  * 
@@ -77,6 +87,6 @@ int parse_map(char *map_path, t_game *game)
 		free_mlx(&game->mlx);
 		return (1);
 	}
-	
+	// TODO: init player con dati dalla mappa
 	return (0);
 }

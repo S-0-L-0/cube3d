@@ -10,6 +10,7 @@ CFILES = \
 			src/parsing/texture_check.c \
 			src/parsing/parse_map.c \
 			src/game/game_loop.c \
+			src/game/raycasting.c \
 			src/utils/get_next_line.c \
 
 OBJ = $(CFILES:.c=.o)

@@ -9,6 +9,7 @@
 #include <sys/time.h>
 #include <sys/stat.h>  // Per stat() in texture_check.c
 #include <math.h>
+#include <stdbool.h>
 #include "../mlx_linux/mlx.h"
 // #include "../mlx_apple/mlx.h"
 
@@ -47,7 +48,7 @@ typedef struct s_ray {
 	double perp_wall_dist; // Distanza perpendicolare al muro
 	int step_x;           // Direzione del passo X (+1 o -1)
 	int step_y;           // Direzione del passo Y (+1 o -1)
-	int hit;              // Se è stato colpito un muro (1) o no (0)
+	bool hit;              // Se è stato colpito un muro (1) o no (0)
 	int side;             // Se è stato colpito un lato NS (0) o EW (1)
 } t_ray;
 
@@ -77,6 +78,7 @@ typedef struct s_game {
 	t_map map;            // Struttura della mappa
 	t_player player;      // Struttura del giocatore
 	t_mlx mlx;            // Struttura MLX
+	t_ray ray;
 	t_texture textures[4]; // Array di texture (N, S, E, W)
 } t_game;
 
@@ -123,5 +125,10 @@ void	free_game(t_game *game);
 int		key_press(int keycode, t_game *game);
 int		close_window(t_game *game);
 int		game_loop(t_game *game);
+
+// raycasting.c
+void	draw_ray_2d(t_game *game, int screen_x);
+void	draw_map_2d(t_game *game);
+void	draw_player_2d(t_game *game);
 
 #endif
