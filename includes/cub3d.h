@@ -13,8 +13,8 @@
 #include "../mlx_linux/mlx.h"
 // #include "../mlx_apple/mlx.h"
 
-#define BONUS 0
-#define DEBUG 1
+#define BONUS 1
+#define DEBUG 0
 
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D

@@ -124,13 +124,18 @@ void	draw_player_2d(t_game *game)
 	draw_circle(game, player_screen_x, player_screen_y, 2, 0x0000FF);
 }
 
+int get_texture_color(t_texture *texture, int x, int y)
+{
+	char	*pixel;
+	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
+		return (0);
+	pixel = texture->addr + ((y * texture->line_length) + (x * (texture->bits_per_pixel / 8)));
+	return (*(unsigned int *)pixel);
+}
+
 void	raycasting(t_game *game, int screen_x)
 {
 	int	side;
-	int	no;
-	int	so;
-	int	we;
-	int	ea;
 
 	side = 0;
 	game->ray.hit = 0;
@@ -206,7 +211,54 @@ void	raycasting(t_game *game, int screen_x)
 		int drawEnd = lineHeight / 2 + game->mlx.win_height / 2;
 		if(drawEnd >= game->mlx.win_height)
 			drawEnd = game->mlx.win_height - 1;
+		
+
+		int texture_index;
+		if (side == 0)
+		{
+			if (game->ray.dir_x > 0)
+				texture_index = 3;
+			else
+				texture_index = 2;
+		}
+		else
+		{
+			if (game->ray.dir_y > 0)
+				texture_index = 1;
+			else
+				texture_index = 0;
+		}
+		t_texture *texture = &game->textures[texture_index];
+
+		double wallX;
+		if (side == 0)
+			wallX = game->player.pos_y + game->ray.perp_wall_dist * game->ray.dir_y;
+		else
+			wallX = game->player.pos_x + game->ray.perp_wall_dist * game->ray.dir_x;
+		wallX -= floor(wallX);
+
+		int texX = (int)(wallX * (double)texture->width);
+		if (side == 0 && game->ray.dir_x < 0)
+			texX = texture->width - texX - 1;
+		if (side == 1 && game->ray.dir_y > 0)
+			texX = texture->width - texX - 1;
+		
+		double step = 1.0 * texture->height / lineHeight;
+		double texPos = (drawStart - game->mlx.win_height / 2 + lineHeight / 2) * step;
+
+		for(int y = drawStart; y<drawEnd; y++)
+		{
+			int texY = (int)texPos & (texture->height - 1);
+			texPos += step;
+			int color = get_texture_color(texture, texX, texY);
+			put_pixel(game, screen_x, y, color);
+		}
+		/*
 		while (drawStart <= drawEnd)
-			put_pixel(game, screen_x, drawStart++, 0x0000FF);
+		{
+			put_pixel(game, screen_x, drawStart, 0x0000FF);
+			drawStart++;
+		}
+		*/
 	}
 }
