@@ -216,30 +216,30 @@ int find_and_validate_player(char **grid, int width, int height, t_player *playe
 				// Imposta direzione e piano camera
 				if (grid[i][j] == 'N')
 				{
-					player->dir_x = 0;
-					player->dir_y = -1;
+					player->dir_x = 0.0;
+					player->dir_y = -1.0;
 					player->plane_x = 0.66;
 					player->plane_y = 0;
 				}
 				else if (grid[i][j] == 'S')
 				{
-					player->dir_x = 0;
-					player->dir_y = 1;
+					player->dir_x = 0.0;
+					player->dir_y = 1.0;
 					player->plane_x = -0.66;
-					player->plane_y = 0;
+					player->plane_y = 0.0;
 				}
 				else if (grid[i][j] == 'E')
 				{
-					player->dir_x = 1;
-					player->dir_y = 0;
-					player->plane_x = 0;
+					player->dir_x = 1.0;
+					player->dir_y = 0.0;
+					player->plane_x = 0.0;
 					player->plane_y = 0.66;
 				}
 				else if (grid[i][j] == 'W')
 				{
-					player->dir_x = -1;
-					player->dir_y = 0;
-					player->plane_x = 0;
+					player->dir_x = -1.0;
+					player->dir_y = 0.0;
+					player->plane_x = 0.0;
 					player->plane_y = -0.66;
 				}
 				

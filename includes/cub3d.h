@@ -13,6 +13,8 @@
 #include "../mlx_linux/mlx.h"
 // #include "../mlx_apple/mlx.h"
 
+#define BONUS 1
+
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
 	int width;            // Larghezza della mappa
@@ -48,8 +50,10 @@ typedef struct s_ray {
 	double perp_wall_dist; // Distanza perpendicolare al muro
 	int step_x;           // Direzione del passo X (+1 o -1)
 	int step_y;           // Direzione del passo Y (+1 o -1)
-	bool hit;              // Se è stato colpito un muro (1) o no (0)
+	int hit;              // Se è stato colpito un muro (1) o no (0)
 	int side;             // Se è stato colpito un lato NS (0) o EW (1)
+	double	intersection_x;
+	double	intersection_y;
 } t_ray;
 
 typedef struct s_texture {
@@ -74,12 +78,23 @@ typedef struct s_mlx {
 	int win_height;       // Altezza della finestra
 } t_mlx;
 
+typedef struct	s_keys
+{
+	bool w;
+	bool a;
+	bool s;
+	bool d;
+	bool left;
+	bool right;
+}	t_keys;
+
 typedef struct s_game {
 	t_map map;            // Struttura della mappa
 	t_player player;      // Struttura del giocatore
 	t_mlx mlx;            // Struttura MLX
 	t_ray ray;
 	t_texture textures[4]; // Array di texture (N, S, E, W)
+	t_keys	keys;
 } t_game;
 
 // Main functions
@@ -127,7 +142,7 @@ int		close_window(t_game *game);
 int		game_loop(t_game *game);
 
 // raycasting.c
-void	draw_ray_2d(t_game *game, int screen_x);
+void	raycasting(t_game *game, int screen_x);
 void	draw_map_2d(t_game *game);
 void	draw_player_2d(t_game *game);
 

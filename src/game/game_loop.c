@@ -43,7 +43,7 @@ void render_test_screen(t_game *game)
 		}
 	}
 	
-	// Disegna una croce al centro per test
+	/* Disegna una croce al centro per test
 	int center_x = game->mlx.win_width / 2;
 	int center_y = game->mlx.win_height / 2;
 	
@@ -66,9 +66,10 @@ void render_test_screen(t_game *game)
 			*(unsigned int*)dst = 0xFFFFFF; // Bianco
 		}
 	}
+		*/
 	
 	// Mostra l'immagine
-	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
+	//mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 }
 
 void	move_player(t_game *game, double dir_x, double dir_y)
@@ -79,7 +80,7 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 	double	delta_y;
 	double	move_speed;
 
-	move_speed = 0.1;
+	move_speed = 0.01;
 	delta_x = dir_x * move_speed;
 	delta_y = dir_y * move_speed;
 	new_x = game->player.pos_x + delta_x;
@@ -96,7 +97,7 @@ void    rot_player(t_game *game, double direction)
 	double  old_dir_x;
 	double  old_plane_x;
 
-	rot_speed = 0.1 * direction;
+	rot_speed = 0.01 * direction;
 	old_dir_x = game->player.dir_x;
 	old_plane_x = game->player.plane_x;
 	game->player.dir_x = game->player.dir_x * cos(rot_speed) - game->player.dir_y * sin(rot_speed);
@@ -105,7 +106,24 @@ void    rot_player(t_game *game, double direction)
 	game->player.plane_y = old_plane_x * sin(rot_speed) + game->player.plane_y * cos(rot_speed);
 }
 
-int key_press(int keycode, t_game *game)
+int	key_release(int keycode, t_game *game)
+{
+	if (keycode == 119) // W
+		game->keys.w = false;
+	if (keycode == 115) // S
+		game->keys.s = false;
+	if (keycode == 97) // A
+		game->keys.a = false;
+	if (keycode == 100) // D
+		game->keys.d = false;
+	if (keycode == 65361) // Freccia sinistra
+		game->keys.left = false;
+	if (keycode == 65363) // Freccia destra
+		game->keys.right = false;
+	return (0);
+}
+
+int	key_press(int keycode, t_game *game)
 {
 	if (keycode == 65307) // ESC su macOS (era 65307 che è Linux)
 	{
@@ -114,35 +132,41 @@ int key_press(int keycode, t_game *game)
 		exit(0);
 	}
 	// Altri tasti per test
-	else if (keycode == 119) // W
+	if (keycode == 119) // W
 	{
 		printf("W pressed\n");
-		move_player(game, game->player.dir_x, game->player.dir_y);
+		game->keys.w = true;
+		//move_player(game, game->player.dir_x, game->player.dir_y);
 	}
-	else if (keycode == 115) // S
+	if (keycode == 115) // S
 	{
 		printf("S pressed\n");
-		move_player(game, -game->player.dir_x, -game->player.dir_y);
+		game->keys.s = true;
+		//move_player(game, -game->player.dir_x, -game->player.dir_y);
 	}
-	else if (keycode == 97) // A
+	if (keycode == 97) // A
 	{
 		printf("A pressed\n");
-		move_player(game, -game->player.plane_x, -game->player.plane_y);
+		game->keys.a = true;
+		//move_player(game, -game->player.plane_x, -game->player.plane_y);
 	}
-	else if (keycode == 100) // D
+	if (keycode == 100) // D
 	{
 		printf("D pressed\n");
-		move_player(game, game->player.plane_x, game->player.plane_y);
+		game->keys.d = true;
+		//move_player(game, game->player.plane_x, game->player.plane_y);
 	}
 	else if (keycode == 65361) // Freccia sinistra
     {
         printf("Left arrow pressed\n");
-        rot_player(game, -1.0);
+		game->keys.left = true;
+        //rot_player(game, -1.0);
     }
     else if (keycode == 65363) // Freccia destra
     {
         printf("Right arrow pressed\n");
-        rot_player(game, 1.0);
+		game->keys.right = true;
+        //rot_player(game, 1.0);
     }
 
 /*	APPLE
@@ -166,6 +190,22 @@ int key_press(int keycode, t_game *game)
 	return (0);
 }
 
+void update_player(t_game *game)
+{
+    if (game->keys.w)
+        move_player(game, game->player.dir_x, game->player.dir_y);
+    if (game->keys.s)
+        move_player(game, -game->player.dir_x, -game->player.dir_y);
+    if (game->keys.a)
+        move_player(game, -game->player.plane_x, -game->player.plane_y);
+    if (game->keys.d)
+        move_player(game, game->player.plane_x, game->player.plane_y);
+    if (game->keys.left)
+        rot_player(game, -1.0);
+    if (game->keys.right)
+        rot_player(game, 1.0);
+}
+
 int close_window(t_game *game)
 {
 	printf("Window close button pressed\n");
@@ -174,37 +214,31 @@ int close_window(t_game *game)
 	return (0);
 }
 
+void	drawcast(t_game *game)
+{
+	int	x;
+
+	x = 0;
+	while (x < game->mlx.win_width)
+	{
+		raycasting(game, x);
+		x++;
+	}
+	if (BONUS)
+	{
+		draw_map_2d(game);
+	}	
+}
+
 // Funzione di rendering principale
 int render_frame(t_game *game)
 {
+	update_player(game);
 	render_test_screen(game);
-	return (0);
-}
-
-void	draw_2d(t_game *game)
-{
-	int	x;
-	int ray_count = 60;
-
-	x = 0;
-	draw_map_2d(game);
-	draw_player_2d(game);
-//	draw_minimap();
-	
-	while (x < ray_count)
-	{
-		draw_ray_2d(game, x * (game->mlx.win_width / ray_count));
-		x++;
-	}
-}
-
-int sd_loop(t_game *game)
-{
-	draw_2d(game);
+	drawcast(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 	return (0);
 }
-
 
 int game_loop(t_game *game)
 {
@@ -218,9 +252,10 @@ int game_loop(t_game *game)
 	
 	// Imposta event handlers
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);          // Key press
+	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game); // Key release
 	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);     // Window close
 	//mlx_loop_hook(game->mlx.mlx, render_frame, game);            // Rendering continuo
-	mlx_loop_hook(game->mlx.mlx, sd_loop, game);                 // raycasting 2d
+	mlx_loop_hook(game->mlx.mlx, render_frame, game);                 // raycasting 2d
 
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
 	
