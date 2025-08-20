@@ -219,15 +219,18 @@ void	drawcast(t_game *game)
 	int	x;
 
 	x = 0;
+	if (DEBUG)
+	{
+		draw_map_2d(game);
+		draw_player_2d(game);
+	}
 	while (x < game->mlx.win_width)
 	{
 		raycasting(game, x);
 		x++;
 	}
 	if (BONUS)
-	{
-		draw_map_2d(game);
-	}	
+		draw_minimap(game);
 }
 
 // Funzione di rendering principale

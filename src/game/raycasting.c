@@ -30,7 +30,7 @@ void draw_circle(t_game *game, int cx, int cy, int radius, int color)
 #define VIEW_RADIUS 5
 #define MINIMAP_DIM (VIEW_RADIUS * 2 + 1)
 
-void    draw_map_2d(t_game *game)
+void    draw_minimap(t_game *game)
 {
 	int minimap_x;
 	int minimap_y;
@@ -76,20 +76,61 @@ void    draw_map_2d(t_game *game)
 	draw_circle(game, player_pixel_x, player_pixel_y, 2, 0xFF0000);
 }
 
+void	draw_map_2d(t_game *game)
+{
+	int	map_x; 
+	int	map_y;
+	int	screen_x;
+	int	screen_y;
+
+	map_y = 0;
+	while (map_y < (game->map.height))
+	{
+		map_x = 0;
+		while (map_x < (game->map.width))
+		{
+			screen_x = 0;
+			while (screen_x < 32)
+			{
+				screen_y = 0;
+				while (screen_y < 32)
+				{
+					int pixel_x = map_x * 32 + screen_x;
+					int pixel_y = map_y * 32 + screen_y;
+					
+					if (game->map.grid[map_y][map_x] == '1')
+						put_pixel(game, pixel_x, pixel_y, 0x000000);
+					else
+						put_pixel(game, pixel_x, pixel_y, 0xFFFFFF);
+					screen_y++;
+				}
+				screen_x++;
+			}
+			map_x++;
+		}
+		map_y++;
+	}
+}
+
+
 void	draw_player_2d(t_game *game)
 {
 	int player_screen_x;
 	int player_screen_y;
 
-	player_screen_x = (int)(game->player.pos_x * 8);
-	player_screen_y = (int)(game->player.pos_y * 8);
+	player_screen_x = (int)(game->player.pos_x * 32);
+	player_screen_y = (int)(game->player.pos_y * 32);
 //	draw_square(game, player_screen_x, player_screen_y, 2, 0x0000FF);
 	draw_circle(game, player_screen_x, player_screen_y, 2, 0x0000FF);
 }
 
 void	raycasting(t_game *game, int screen_x)
 {
-	int		side;
+	int	side;
+	int	no;
+	int	so;
+	int	we;
+	int	ea;
 
 	side = 0;
 	game->ray.hit = 0;
@@ -147,7 +188,16 @@ void	raycasting(t_game *game, int screen_x)
 	else
 		game->ray.perp_wall_dist = (game->ray.side_dist_y - game->ray.delta_dist_y);
 	
-	if (game->ray.hit)
+	if (game->ray.hit && DEBUG)
+	{
+		double intersection_x = game->player.pos_x + game->ray.dir_x * game->ray.perp_wall_dist;
+		double intersection_y = game->player.pos_y + game->ray.dir_y * game->ray.perp_wall_dist;
+		if (side)
+			draw_circle(game, intersection_x * 32, intersection_y * 32, 1, 0xFF0000);
+		else
+			draw_circle(game, intersection_x * 32, intersection_y * 32, 1, 0xFF00FF);
+	}
+	else if (game->ray.hit)
 	{
 		int lineHeight = (int)(game->mlx.win_height / game->ray.perp_wall_dist);
 		int drawStart = -lineHeight / 2 + game->mlx.win_height / 2;
@@ -158,13 +208,5 @@ void	raycasting(t_game *game, int screen_x)
 			drawEnd = game->mlx.win_height - 1;
 		while (drawStart <= drawEnd)
 			put_pixel(game, screen_x, drawStart++, 0x0000FF);
-	}
-	if (game->ray.hit && BONUS)
-	{
-		/*
-		double intersection_x = game->player.pos_x + game->ray.dir_x * game->ray.perp_wall_dist;
-		double intersection_y = game->player.pos_y + game->ray.dir_y * game->ray.perp_wall_dist;
-		draw_circle(game, intersection_x * 8, intersection_y * 8, 1, 0xFF0000);
-		*/
 	}
 }

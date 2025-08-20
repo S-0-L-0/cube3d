@@ -13,7 +13,8 @@
 #include "../mlx_linux/mlx.h"
 // #include "../mlx_apple/mlx.h"
 
-#define BONUS 1
+#define BONUS 0
+#define DEBUG 1
 
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
@@ -145,5 +146,6 @@ int		game_loop(t_game *game);
 void	raycasting(t_game *game, int screen_x);
 void	draw_map_2d(t_game *game);
 void	draw_player_2d(t_game *game);
+void	draw_minimap(t_game *game);
 
 #endif
