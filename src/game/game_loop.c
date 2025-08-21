@@ -173,7 +173,7 @@ int	key_press(int keycode, t_game *game)
 	else if (keycode == 13) // W
 	{
 		printf("W pressed\n");
-	}
+	}mlx_mouse_hook(vars.win, mouse_hook, &vars);
 	else if (keycode == 1) // S
 	{
 		printf("S pressed\n");
@@ -188,6 +188,24 @@ int	key_press(int keycode, t_game *game)
 	}
 */	
 	return (0);
+}
+
+int	mouse_hook(int x, int y, t_game *game)
+{
+	(void)y;
+
+	if (x < game->mlx.win_width / 2 - 5)
+	{
+		rot_player(game, -1.0);
+	}
+	
+	else if (x > game->mlx.win_width / 2 + 5)
+	{
+		rot_player(game, 1.0);
+	}
+
+	return(0);
+
 }
 
 void update_player(t_game *game)
@@ -236,6 +254,7 @@ void	drawcast(t_game *game)
 // Funzione di rendering principale
 int render_frame(t_game *game)
 {
+	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	update_player(game);
 	render_test_screen(game);
 	drawcast(game);
@@ -257,6 +276,7 @@ int game_loop(t_game *game)
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);          // Key press
 	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game); // Key release
 	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);     // Window close
+	mlx_hook(game->mlx.win, 6, 1L << 6, mouse_hook, game);
 	//mlx_loop_hook(game->mlx.mlx, render_frame, game);            // Rendering continuo
 	mlx_loop_hook(game->mlx.mlx, render_frame, game);                 // raycasting 2d
 
