@@ -101,13 +101,13 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 		game->player.pos_x = new_x;
 }
 
-void    rot_player(t_game *game, double direction)
+void    rot_player(t_game *game, double direction, double speed)
 {
 	double  rot_speed;
 	double  old_dir_x;
 	double  old_plane_x;
 
-	rot_speed = game->time.frame_time * 3.0 * direction;
+	rot_speed = game->time.frame_time * speed * direction;
 	old_dir_x = game->player.dir_x;
 	old_plane_x = game->player.plane_x;
 	game->player.dir_x = game->player.dir_x * cos(rot_speed) - game->player.dir_y * sin(rot_speed);
@@ -204,14 +204,14 @@ int	mouse_hook(int x, int y, t_game *game)
 {
 	(void)y;
 
-	if (x < game->mlx.win_width / 2 - 5)
+	if (x < game->mlx.win_width / 2)
 	{
-		rot_player(game, -1.0);
+		rot_player(game, -1.0, 5.0);
 	}
 	
-	else if (x > game->mlx.win_width / 2 + 5)
+	else if (x > game->mlx.win_width / 2)
 	{
-		rot_player(game, 1.0);
+		rot_player(game, 1.0, 5.0);
 	}
 
 	return(0);
@@ -229,9 +229,9 @@ void update_player(t_game *game)
     if (game->keys.d)
         move_player(game, game->player.plane_x, game->player.plane_y);
     if (game->keys.left)
-        rot_player(game, -1.0);
+        rot_player(game, -1.0, 3.0);
     if (game->keys.right)
-        rot_player(game, 1.0);
+        rot_player(game, 1.0, 3.0);
 }
 
 int close_window(t_game *game)
@@ -268,7 +268,6 @@ int render_frame(t_game *game)
 	game->time.time = get_time_ms();
 	game->time.frame_time = (game->time.time - game->time.old_time) / 1000.0;
 
-	printf("%2.f\n",  game->time.time - game->time.start_time );
 	update_player(game);
 	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	render_test_screen(game);
@@ -304,7 +303,6 @@ int game_loop(t_game *game)
 
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
 	
-	game->time.start_time = get_time_ms();
 	// Avvia loop
 	mlx_loop(game->mlx.mlx);
 	
