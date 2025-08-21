@@ -72,6 +72,15 @@ void render_test_screen(t_game *game)
 	//mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 }
 
+long long	get_time_ms()
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+
 void	move_player(t_game *game, double dir_x, double dir_y)
 {
 	double	new_x;
@@ -80,7 +89,7 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 	double	delta_y;
 	double	move_speed;
 
-	move_speed = 0.01;
+	move_speed = game->time.frame_time * 5.0;
 	delta_x = dir_x * move_speed;
 	delta_y = dir_y * move_speed;
 	new_x = game->player.pos_x + delta_x;
@@ -97,7 +106,7 @@ void    rot_player(t_game *game, double direction)
 	double  old_dir_x;
 	double  old_plane_x;
 
-	rot_speed = 0.01 * direction;
+	rot_speed = game->time.frame_time * 3.0 * direction;
 	old_dir_x = game->player.dir_x;
 	old_plane_x = game->player.plane_x;
 	game->player.dir_x = game->player.dir_x * cos(rot_speed) - game->player.dir_y * sin(rot_speed);
@@ -254,8 +263,12 @@ void	drawcast(t_game *game)
 // Funzione di rendering principale
 int render_frame(t_game *game)
 {
-	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
+	game->time.old_time = game->time.time;
+	game->time.time = get_time_ms();
+	game->time.frame_time = (game->time.time - game->time.old_time) / 1000.0;
+
 	update_player(game);
+	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
@@ -264,6 +277,10 @@ int render_frame(t_game *game)
 
 int game_loop(t_game *game)
 {
+	game->time.time = get_time_ms();
+    game->time.old_time = get_time_ms();
+    game->time.frame_time = 0;
+
 	printf("Starting game loop...\n");
 	printf("Window size: %dx%d\n", game->mlx.win_width, game->mlx.win_height);
 	printf("Player position: (%.2f, %.2f)\n", game->player.pos_x, game->player.pos_y);
@@ -279,6 +296,9 @@ int game_loop(t_game *game)
 	mlx_hook(game->mlx.win, 6, 1L << 6, mouse_hook, game);
 	//mlx_loop_hook(game->mlx.mlx, render_frame, game);            // Rendering continuo
 	mlx_loop_hook(game->mlx.mlx, render_frame, game);                 // raycasting 2d
+
+	mlx_mouse_hide(game->mlx.mlx, game->mlx.win);
+
 
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
 	

@@ -79,6 +79,12 @@ typedef struct s_mlx {
 	int win_height;       // Altezza della finestra
 } t_mlx;
 
+typedef struct s_time {
+	double      time;
+    double      old_time;
+    double      frame_time;
+}	t_time;
+
 typedef struct	s_keys
 {
 	bool w;
@@ -96,6 +102,7 @@ typedef struct s_game {
 	t_ray ray;
 	t_texture textures[4]; // Array di texture (N, S, E, W)
 	t_keys	keys;
+	t_time	time;
 } t_game;
 
 // Main functions

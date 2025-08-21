@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	
 	// STEP 3: AVVIO GAME LOOP INFINITO
 	// Gestisce rendering continuo + eventi tastiera/mouse
-	mlx_mouse_hide(game.mlx.mlx, game.mlx.win);
+
 	game_loop(&game);
 	
 	return (0);
