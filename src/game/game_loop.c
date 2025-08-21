@@ -94,6 +94,7 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 	delta_y = dir_y * move_speed;
 	new_x = game->player.pos_x + delta_x;
 	new_y = game->player.pos_y + delta_y;
+
 	if (game->map.grid[(int)new_y][(int)game->player.pos_x] == '0')
 		game->player.pos_y = new_y;
 	if (game->map.grid[(int)game->player.pos_y][(int)new_x] == '0')
@@ -267,6 +268,7 @@ int render_frame(t_game *game)
 	game->time.time = get_time_ms();
 	game->time.frame_time = (game->time.time - game->time.old_time) / 1000.0;
 
+	printf("%2.f\n",  game->time.time - game->time.start_time );
 	update_player(game);
 	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	render_test_screen(game);
@@ -302,6 +304,7 @@ int game_loop(t_game *game)
 
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
 	
+	game->time.start_time = get_time_ms();
 	// Avvia loop
 	mlx_loop(game->mlx.mlx);
 	

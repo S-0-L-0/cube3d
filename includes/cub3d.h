@@ -83,6 +83,7 @@ typedef struct s_time {
 	double      time;
     double      old_time;
     double      frame_time;
+	long long	start_time;
 }	t_time;
 
 typedef struct	s_keys
