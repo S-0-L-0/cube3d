@@ -80,9 +80,10 @@ typedef struct s_mlx {
 } t_mlx;
 
 typedef struct s_time {
-	double      time;
-    double      old_time;
-    double      frame_time;
+	double		time;
+    double		old_time;
+    double		frame_time;
+	double		start_time;
 }	t_time;
 
 typedef struct	s_keys
@@ -93,6 +94,7 @@ typedef struct	s_keys
 	bool d;
 	bool left;
 	bool right;
+	int		last_mouse_x;
 }	t_keys;
 
 typedef struct s_game {
@@ -100,7 +102,7 @@ typedef struct s_game {
 	t_player player;      // Struttura del giocatore
 	t_mlx mlx;            // Struttura MLX
 	t_ray ray;
-	t_texture textures[4]; // Array di texture (N, S, E, W)
+	t_texture textures[10]; // Array di texture (N, S, E, W)
 	t_keys	keys;
 	t_time	time;
 } t_game;
@@ -178,5 +180,10 @@ void	draw_player_2d(t_game *game);
 
 // minimap.c
 void	draw_minimap(t_game *game);
+void	draw_border(t_game *game);
+
+// hud.c
+void	draw_crosshair(t_game *game);
+void	draw_torch(t_game *game);
 
 #endif

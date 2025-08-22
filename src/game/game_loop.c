@@ -88,7 +88,9 @@ void	drawcast(t_game *game)
 		x++;
 	}
 	if (BONUS)
+	{
 		draw_minimap(game);
+	}
 }
 
 // Funzione di rendering principale
@@ -102,6 +104,8 @@ int render_frame(t_game *game)
 	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
+	draw_torch(game);
+	draw_crosshair(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 	return (0);
 }
@@ -111,6 +115,7 @@ int game_loop(t_game *game)
 	game->time.time = get_time_ms();
     game->time.old_time = get_time_ms();
     game->time.frame_time = 0;
+	game->time.start_time = get_time_ms();
 
 	printf("Starting game loop...\n");
 	printf("Window size: %dx%d\n", game->mlx.win_width, game->mlx.win_height);

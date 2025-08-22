@@ -8,7 +8,7 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 	double	delta_y;
 	double	move_speed;
 
-	move_speed = game->time.frame_time * 5.0;
+	move_speed = game->time.frame_time * 4.0;
 	delta_x = dir_x * move_speed;
 	delta_y = dir_y * move_speed;
 	new_x = game->player.pos_x + delta_x;
@@ -34,7 +34,6 @@ void	rot_player(t_game *game, double direction, double speed)
 	game->player.plane_x = game->player.plane_x * cos(rot_speed) - game->player.plane_y * sin(rot_speed);
 	game->player.plane_y = old_plane_x * sin(rot_speed) + game->player.plane_y * cos(rot_speed);
 }
-
 
 void	update_player(t_game *game)
 {

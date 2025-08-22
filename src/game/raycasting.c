@@ -126,6 +126,7 @@ void	raycasting(t_game *game, int screen_x)
 		double texPos = (drawStart - (game->mlx.win_height / 2) + (lineHeight / 2)) * step;
 
 		// draw a line in the y dir
+
 		for(int y = drawStart; y<drawEnd; y++)
 		{
 			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow

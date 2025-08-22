@@ -1,6 +1,6 @@
 #include "../../includes/cub3d.h"
 
-#define TILE_SIZE 8
+#define TILE_SIZE 12
 #define VIEW_RADIUS 5
 #define MINIMAP_DIM (VIEW_RADIUS * 2 + 1)
 
@@ -20,13 +20,13 @@ void	draw_minimap(t_game *game)
 			map_to_read_x = (int)game->player.pos_x - VIEW_RADIUS + minimap_x;
 			map_to_read_y = (int)game->player.pos_y - VIEW_RADIUS + minimap_y;
 
-			int color = 0xFFFFFF;
+			int color = (game->map.floor_color[0] << 16) | (game->map.floor_color[1] << 8) | game->map.floor_color[2];
 			
 			if (map_to_read_y >= 0 && map_to_read_y < game->map.height &&
 				map_to_read_x >= 0 && map_to_read_x < game->map.width &&
 				game->map.grid[map_to_read_y][map_to_read_x] == '1')
 			{
-				color = 0x000000;
+				color = 0x939393;
 			}
 			int screen_x = 0;
 			while (screen_x < TILE_SIZE)
@@ -47,5 +47,6 @@ void	draw_minimap(t_game *game)
 	}
 	int player_pixel_x = VIEW_RADIUS * TILE_SIZE + TILE_SIZE / 2;
 	int player_pixel_y = VIEW_RADIUS * TILE_SIZE + TILE_SIZE / 2;
-	draw_circle(game, player_pixel_x, player_pixel_y, 2, 0xFF0000);
+	draw_circle(game, player_pixel_x, player_pixel_y, 3, 0xFFFFFF);
 }
+

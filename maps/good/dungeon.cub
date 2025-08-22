@@ -1,10 +1,10 @@
 F 76,76,76
 C 99,99,99
 
-NO assets/textures/red_brick.xpm
-SO assets/textures/red_brick.xpm
-WE assets/textures/red_brick.xpm
-EA assets/textures/red_brick.xpm
+NO assets/textures/diamonds.xpm
+SO assets/textures/skeleton.xpm
+WE assets/textures/gold.xpm
+EA assets/textures/lava.xpm
 
 1111111111111111111
 10W1001001001000001
