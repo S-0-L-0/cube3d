@@ -21,10 +21,12 @@ int main(int argc, char **argv)
 {
 	t_game          game;
     t_parse_data    parse_data;  // Struttura temporanea
+    t_player        player;
     
     // Inizializzazione
     ft_memset(&game, 0, sizeof(t_game));
     ft_memset(&parse_data, 0, sizeof(t_parse_data));
+    ft_memset(&player, 0, sizeof(t_player));
     
     // Parsing con struttura temporanea
     if (parser(argc, argv, &game, &parse_data) != 0)
@@ -46,7 +48,7 @@ int main(int argc, char **argv)
 	// STEP 2: PARSING COMPLETO + SETUP GRAFICO
 	// Questo step riempie completamente game->map e game->player,
 	// inizializza MLX e carica tutte le texture
-	if (parse_map(argv[1], &game) != 0)
+	if (parse_map(&parse_data, &game, &player) != 0)
 		return (1);
 	
 	// STEP 3: AVVIO GAME LOOP INFINITO
