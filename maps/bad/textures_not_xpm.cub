@@ -1,6 +1,6 @@
-NO assets/textures/red_brick
+NO assets/textures/diamonds.xpm
 SO assets/textures/skeleton.xpm
-WE assets/textures/gold.xpm
+WE assets/textures/gold.xbm
 EA assets/textures/lava.xpm
 
 F 20,20,20
