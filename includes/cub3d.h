@@ -16,6 +16,17 @@
 #define BONUS 1
 #define DEBUG 0
 
+typedef struct s_parse_data {
+    char    **file_content;     // Contenuto completo del file
+    int     map_start_line;     // Linea dove inizia la mappa
+    int     texture_count;      // Contatore texture caricate (max 4)
+    int     floor_set;          // Flag: floor color settato?
+    int     ceiling_set;        // Flag: ceiling color settato?
+    bool    north_loaded;       // Flag per evitare duplicati
+    bool    south_loaded;
+    bool    east_loaded;
+    bool    west_loaded;
+} t_parse_data;
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
 	int width;            // Larghezza della mappa
@@ -101,34 +112,51 @@ typedef struct s_game {
 // Main functions
 void	init_game(t_game *game);
 char	*get_next_line(int fd);
-int		parse_map(char *map_path, t_game *game);
+int		parser(int argc, char **argv, t_game *game, t_parse_data *parse);
 
-// file_check.c
-int		validate_file_extension(char *filename);
-int		validate_file_access(char *filename);
-int		count_file_lines(char *filename);
-char	**read_file_lines(char *filename, int line_count);
-char	*trim_whitespace(char *str);
+// parser_validation.c
+int		validate_arguments(int argc, char **argv);
+int		open_and_validate_file(char *filepath);
+int 	validate_texture_file(char *path, char *texture_name);
+
+// parser_file.c
+int		read_file_content(int fd, t_parse_data *parse);
 int		is_empty_line(char *line);
 int		is_map_line(char *line);
-int		parse_file_elements(char **lines, t_map *map);
-void	free_string_array(char **array);
 
-// texture_check.c
-int		parse_texture(char *line, char **texture_path);
-void	free_texture(t_texture *texture, void *mlx);
+// parser_config.c
+int		parse_config_elements(t_parse_data *parse, t_map *map);
+int		parse_texture_line(char *line, t_map *map, t_parse_data *parse);
+int		parse_color_line(char *line, t_map *map, t_parse_data *parse);
+int		validate_config_complete(t_map *map, t_parse_data *parse);
+int		extract_rgb_values(char *str, int *rgb);
 
-// rgb_check.c
-int		validate_rgb_values(int r, int g, int b);
-int		parse_rgb_color(char *line, int *color);
+// parse_map.c
+int		parse_map(t_parse_data *parse, t_map *map, t_player *player);
+int		normalize_map_width(t_map *map);
+int		find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end);
+int		extract_player_position(t_map *map, t_player *player);
 
-// map_check.c
-void	calculate_map_dimensions(char **lines, int start_line, int *width, int *height);
-int		validate_map_closed(char **grid, int width, int height, t_player *player);
-int		find_and_validate_player(char **grid, int width, int height, t_player *player);
-int		parse_map_grid(char **lines, int start_line, t_map *map, t_player *player);
+
+// parser_map_validation.c
+int		validate_map(t_map *map, t_player *player);
+int		validate_map_characters(t_map *map);
+int		flood_fill_check(t_map *map, t_player *player);
+int		flood_fill_recursive(t_map *map, int **visited, int x, int y);
+int		check_map_borders(t_map *map);
+
+// parser_utils.c
+char	**ft_split_whitespace(char *str);
+char	*trim_spaces(char *str);
+int		**allocate_2d_int_array(int height, int width);
+void	free_2d_int_array(int **array, int height);
+void	free_split(char **split);
+
+// parser_cleanup.c
+void	cleanup_parse_data(t_parse_data *parse);
+void	cleanup_game(t_game *game);
+void	cleanup_config(t_game *game);
 void	free_map_grid(t_map *map);
-void	free_map(t_map *map);
 
 // init_struct.c (funzioni effettivamente utilizzate)
 int		parse_complete_file(char *map_path, t_map *map, t_player *player);

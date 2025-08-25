@@ -3,12 +3,14 @@ NAME = cub3d
 
 CFILES = \
 			src/main.c \
-			src/parsing/file_check.c \
-			src/parsing/init_struct.c \
-			src/parsing/map_check.c \
-			src/parsing/rgb_check.c \
-			src/parsing/texture_check.c \
-			src/parsing/parse_map.c \
+			src/new_parser/main_parser.c \
+			src/new_parser/parser_cleanup.c \
+			src/new_parser/parser_config.c \
+			src/new_parser/parser_file.c \
+			src/new_parser/parser_map_validation.c \
+			src/new_parser/parser_map.c \
+			src/new_parser/parser_utils.c \
+			src/new_parser/parser_validation.c \
 			src/game/game_loop.c \
 			src/game/raycasting.c \
 			src/utils/get_next_line.c \

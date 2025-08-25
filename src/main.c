@@ -16,44 +16,38 @@ void init_game(t_game *game)
 	game->mlx.win_height = 768;  // o altra altezza a tua scelta
 }
 
-/*
- * FLUSSO PRINCIPALE DEL PROGRAMMA:
- * 
- * 1. Valida argomenti da linea di comando
- * 2. Inizializza struttura principale t_game
- * 3. Parsing completo del file .cub (riempie game->map e game->player)
- * 4. Inizializzazione grafica MLX e caricamento texture
- * 5. Avvio del game loop (rendering + gestione eventi)
- * 
- * DATI IN USCITA:
- * - game->map: griglia 2D, dimensioni, path texture, colori RGB
- * - game->player: posizione, direzione, piano camera
- * - game->mlx: connessione grafica, finestra, buffer immagine
- * - game->textures[4]: array di texture caricate (N,S,W,E)
- */
+
 int main(int argc, char **argv)
 {
-	t_game game;
-	
-	// VALIDAZIONE INPUT: Deve essere fornito esattamente un file .cub
-	if (argc != 2)
-	{
-		printf("Error\nmissing .cub maps file");
-		return (1);
-	}
-	
-	// STEP 1: Inizializza struttura principale a valori di default
+	t_game          game;
+    t_parse_data    parse_data;  // Struttura temporanea
+    
+    // Inizializzazione
+    ft_memset(&game, 0, sizeof(t_game));
+    ft_memset(&parse_data, 0, sizeof(t_parse_data));
+    
+    // Parsing con struttura temporanea
+    if (parser(argc, argv, &game, &parse_data) != 0)
+    {
+        cleanup_parse_data(&parse_data);  // Pulisci dati temporanei
+        cleanup_game(&game);              // Pulisci dati gioco
+        return (1);
+    }
+    
+    // Parse data non serve più, libera subito
+    cleanup_parse_data(&parse_data);
+    
+    // Inizializza i valori double del player basandoti su direction
+    init_player_direction(&game.player);
+
+
 	init_game(&game);
-	
-	// STEP 2: PARSING COMPLETO + SETUP GRAFICO
-	// Questo step riempie completamente game->map e game->player,
-	// inizializza MLX e carica tutte le texture
-	if (parse_map(argv[1], &game) != 0)
-		return (1);
-	
-	// STEP 3: AVVIO GAME LOOP INFINITO
-	// Gestisce rendering continuo + eventi tastiera/mouse
-	game_loop(&game);
+    
+    // Game loop...
+    game_loop(&game);
+    
+    cleanup_game(&game);
+    return (0);
 	
 	return (0);
 }
