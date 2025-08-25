@@ -1,18 +1,16 @@
 #include "../../includes/cub3d.h"
 
-int	mouse_hook(int x, int y, t_game *game)
+int mouse_hook(int x, int y, t_game *game)
 {
-	(void)y;
+	int		delta_x;
+	double	rot_speed;
 
-	if (x < game->mlx.win_width / 2)
-	{
-		rot_player(game, -1.0, 5.0);
-	}
-	
-	else if (x > game->mlx.win_width / 2)
-	{
-		rot_player(game, 1.0, 5.0);
-	}
+	(void)y;
+	delta_x = x - (game->mlx.win_width / 2);
+	if (delta_x == 0)
+		return (0);
+	rot_speed = ((double)delta_x * 0.030) * game->time.frame_time;
+	rot_player(game, rot_speed);
 	return(0);
 }
 

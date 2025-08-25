@@ -159,7 +159,7 @@ void	draw_minimap(t_game *game);
 
 // movement.c
 void	update_player(t_game *game);
-void	rot_player(t_game *game, double direction, double speed);
+void	rot_player(t_game *game, double speed);
 void	move_player(t_game *game, double dir_x, double dir_y);
 
 // hooks.c
