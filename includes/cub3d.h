@@ -15,6 +15,9 @@
 
 #define BONUS 1
 #define DEBUG 0
+#define TILE_SIZE 12
+#define VIEW_RADIUS 5
+#define MINIMAP_DIM (VIEW_RADIUS * 2 + 1)
 
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
