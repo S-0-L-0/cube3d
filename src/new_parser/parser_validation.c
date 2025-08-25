@@ -6,18 +6,16 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:29 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/22 14:37:20 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 15:43:02 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
 
-int validate_arguments(int argc, char **argv)
+int validate_arguments(int argc)
 {
-    int     len;
-    int     i;
-    
+
     /*
     ** CONTROLLO 1: NUMERO DI ARGOMENTI
     ** Il programma deve ricevere esattamente 2 argomenti:
@@ -33,6 +31,7 @@ int validate_arguments(int argc, char **argv)
         printf("Usage: ./cub3d <map.cub>\n");
         return (1);
     }
+    return (0);
 }
 
 int open_and_validate_file(char *filepath)
@@ -78,7 +77,7 @@ int validate_texture_file(char *path, char *texture_name)
     
     /* Calcola lunghezza e verifica estensione .xpm */
     len = ft_strlen(path);
-    if (len < 5 || ft_strcmp(&path[len - 4], ".xpm") != 0)
+    if (len < 5 || ft_strncmp(&path[len - 4], ".xpm", 4) != 0)
     {
         printf("Error\n%s texture must be a .xpm file\n", texture_name);
         return (1);

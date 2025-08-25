@@ -1,7 +1,7 @@
-NO assets/textures/red_brick.xpm
-EA assets/textures/red_brick.xpm
-SO assets/textures/red_brick.xpm
-WE assets/textures/red_brick.xpm
+NO assets/textures/diamonds.xpm
+EA assets/textures/lava.xpm
+SO assets/textures/skeleton.xpm
+WE assets/textures/gold.xpm
 
 C 35,19,73
 F 15,6,40

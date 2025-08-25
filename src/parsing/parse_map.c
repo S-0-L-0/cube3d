@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:27:47 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/18 20:03:23 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:06:50 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,7 @@ int parse_map(char *map_path, t_game *game)
 		return (1);
 	}
 	
-	// Inizializza MLX
-	if (init_mlx(&game->mlx) != 0)
-	{
-		printf("Error\nFailed to initialize graphics\n");
-		free_map(&game->map);
-		return (1);
-	}
+	
 	
 	// Inizializza texture
 	if (init_texture(&game->textures[0], game->map.north_texture, game->mlx.mlx) != 0)

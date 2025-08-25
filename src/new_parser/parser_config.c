@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:11 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/22 16:30:49 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:45:11 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
         */
         if (is_map_line(parse->file_content[i]))
         {
+            printf("\n");
             parse->map_start_line = i;
             break;  /* Mappa trovata, stop parsing config */
         }
@@ -100,6 +101,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
     */
     if (parse->map_start_line == 0)
     {
+        printf("enzomma\n");
         printf("Error\nNo map found in file\n");
         return (1);
     }
@@ -142,28 +144,28 @@ int parse_texture_line(char *line, t_map *map, t_parse_data *parse)
     {
         identifier = "NO";
         dest_texture = &map->north_texture;
-        loaded_flag = &parse->north_loaded;
+        loaded_flag = (int *)&parse->north_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "SO ", 3) == 0)
     {
         identifier = "SO";
         dest_texture = &map->south_texture;
-        loaded_flag = &parse->south_loaded;
+        loaded_flag = (int *)&parse->south_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "WE ", 3) == 0)
     {
         identifier = "WE";
         dest_texture = &map->west_texture;
-        loaded_flag = &parse->west_loaded;
+        loaded_flag = (int *)&parse->west_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "EA ", 3) == 0)
     {
         identifier = "EA";
         dest_texture = &map->east_texture;
-        loaded_flag = &parse->east_loaded;
+        loaded_flag = (int *)&parse->east_loaded;
         path_start = line + 3;
     }
     else
@@ -180,11 +182,11 @@ int parse_texture_line(char *line, t_map *map, t_parse_data *parse)
     ** CONTROLLO DUPLICATI
     ** Se questa texture è già stata definita, è un errore
     */
-    if (*loaded_flag)
+   /*  if (*loaded_flag)
     {
         printf("Error\nDuplicate %s texture definition\n", identifier);
         return (1);
-    }
+    } */
     
     /*
     ** SKIP SPAZI DOPO L'IDENTIFIER

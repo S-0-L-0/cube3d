@@ -27,6 +27,7 @@ typedef struct s_parse_data {
     bool    east_loaded;
     bool    west_loaded;
 } t_parse_data;
+
 typedef struct s_map {
 	char **grid;          // La mappa come array 2D
 	int width;            // Larghezza della mappa
@@ -122,9 +123,11 @@ typedef struct s_game {
 void	init_game(t_game *game);
 char	*get_next_line(int fd);
 int		parser(int argc, char **argv, t_game *game, t_parse_data *parse);
+int	set_textures(t_game *game);
+int init_texture(t_texture *texture, char *texture_path, void *mlx);
 
 // parser_validation.c
-int		validate_arguments(int argc, char **argv);
+int		validate_arguments(int argc);
 int		open_and_validate_file(char *filepath);
 int 	validate_texture_file(char *path, char *texture_name);
 
@@ -201,6 +204,16 @@ long long	get_time_ms();
 unsigned int	get_pixel_color(t_texture *texture, int x, int y);
 void	put_pixel(t_game *game, int x, int y, int color);
 void	draw_circle(t_game *game, int cx, int cy, int radius, int color);
+void	*ft_memset(void *b, int c, size_t len);
+char	*ft_strdup(const char *s1);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strlen(const char *s);
+
+void	free_game(t_game *game);
+void	free_texture(t_texture *texture, void *mlx);
+void	free_mlx(t_mlx *mlx);
+void	free_map(t_map *map);
+
 
 // 2d.c
 void	draw_map_2d(t_game *game);

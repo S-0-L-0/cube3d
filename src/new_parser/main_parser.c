@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:08:44 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/22 16:34:20 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 15:43:25 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int parser(int argc, char **argv, t_game *game, t_parse_data *parse)
     ** Controlla che ci sia esattamente un argomento e che abbia
     ** estensione .cub prima ancora di tentare di aprire il file
     */
-    if (validate_arguments(argc, argv) != 0)
+    if (validate_arguments(argc) != 0)
         return (1);  // Errore già stampato dalla funzione
     
     /*

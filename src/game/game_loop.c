@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:33:46 by edforte           #+#    #+#             */
-/*   Updated: 2025/06/01 12:15:54 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:11:54 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,7 @@ int game_loop(t_game *game)
 	printf("Player position: (%.2f, %.2f)\n", game->player.pos_x, game->player.pos_y);
 	printf("Map size: %dx%d\n", game->map.width, game->map.height);
 	
-	// Renderizza il primo frame
-	//render_test_screen(game);
+
 	
 	// Imposta event handlers
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);          // Key press

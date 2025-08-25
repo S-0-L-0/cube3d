@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:07 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/23 16:10:18 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:18:09 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int is_empty_line(char *line)
         if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
         {
             /* Trovato un carattere significativo, linea non vuota */
+
             return (0);
         }
         i++;

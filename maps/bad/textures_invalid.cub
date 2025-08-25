@@ -1,7 +1,7 @@
-NO assets/textures/red_brick.xpm
-SO assets/textures/red_brick.xpm
+NO assets/textures/diamonds.xpm
+SO assets/textures/skeleton.xpm
 WE assets/textures/x
-EA assets/textures/red_brick.xpm
+EA assets/textures/lava.xpm
 
 F 20,20,20
 C 200,200,200

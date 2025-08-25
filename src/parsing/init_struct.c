@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:24:27 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/18 19:13:37 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:09:25 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,5 +248,5 @@ void free_game(t_game *game)
 	free_mlx(&game->mlx);
 	
 	// Azzera il player
-	memset(&game->player, 0, sizeof(t_player));
+	ft_memset(&game->player, 0, sizeof(t_player));
 }

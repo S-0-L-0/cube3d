@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/23 15:24:20 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/25 19:07:05 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,13 +306,18 @@ int find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end)
     int i;
     int found_end;
     
+    i = 0;
+    found_end = 0;
     /*
     ** INIZIALIZZAZIONE
     ** map_start_line è stato già settato da parse_config_elements
     ** quando ha trovato la prima linea della mappa
     */
+
+   
     if (parse->map_start_line == 0)
     {
+        printf("fanculo\n");
         printf("Error\nNo map found in file\n");
         return (1);
     }
@@ -472,10 +477,40 @@ int extract_player_position(t_map *map, t_player *player)
                 ** Salviamo le coordinate ESATTE dalla griglia
                 ** Il centraggio sarà fatto dopo, durante l'init del gioco
                 */
-                player->pos_x = (double)j;
-                player->pos_y = (double)i;
+                player->pos_x = (double)j + 0.5;;
+                player->pos_y = (double)i + 0.5;;
                 player->direction = c;
                 player_count++;
+				
+				// Imposta direzione e piano camera
+				if (map->grid[i][j] == 'N')
+				{
+					player->dir_x = 0.0;
+					player->dir_y = -1.0;
+					player->plane_x = 0.66;
+					player->plane_y = 0;
+				}
+				else if (map->grid[i][j] == 'S')
+				{
+					player->dir_x = 0.0;
+					player->dir_y = 1.0;
+					player->plane_x = -0.66;
+					player->plane_y = 0.0;
+				}
+				else if (map->grid[i][j] == 'E')
+				{
+					player->dir_x = 1.0;
+					player->dir_y = 0.0;
+					player->plane_x = 0.0;
+					player->plane_y = 0.66;
+				}
+				else if (map->grid[i][j] == 'W')
+				{
+					player->dir_x = -1.0;
+					player->dir_y = 0.0;
+					player->plane_x = 0.0;
+					player->plane_y = -0.66;
+				}
                 
                 /*
                 ** SOSTITUISCI CON SPAZIO VUOTO
