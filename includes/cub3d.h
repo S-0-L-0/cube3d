@@ -97,6 +97,16 @@ typedef struct	s_keys
 	int		last_mouse_x;
 }	t_keys;
 
+typedef struct s_render
+{
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			texture_x;
+	double		wall_x;
+	t_texture	*texture;
+}   t_render;
+
 typedef struct s_game {
 	t_map map;            // Struttura della mappa
 	t_player player;      // Struttura del giocatore
@@ -105,6 +115,7 @@ typedef struct s_game {
 	t_texture textures[10]; // Array di texture (N, S, E, W)
 	t_keys	keys;
 	t_time	time;
+	t_render	render;
 } t_game;
 
 // Main functions

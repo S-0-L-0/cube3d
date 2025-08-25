@@ -1,49 +1,54 @@
 #include "../../includes/cub3d.h"
 
-void	raycasting(t_game *game, int screen_x)
+static void	init_ray(t_game *game, int screen_x)
 {
-	int	side;
-
-	side = 0;
 	game->ray.hit = 0;
-	game->ray.camera_x = ((2 * screen_x) / (double)game->mlx.win_width) - 1; // [-1, 0, 1]
-	// ray direction
-	game->ray.dir_x = game->player.dir_x + (game->player.plane_x * game->ray.camera_x);
-	game->ray.dir_y = game->player.dir_y + (game->player.plane_y * game->ray.camera_x);
-	// current box of the map
+	game->ray.camera_x = ((2 * screen_x) / (double)game->mlx.win_width) - 1;
+	game->ray.dir_x = game->player.dir_x
+		+ (game->player.plane_x * game->ray.camera_x);
+	game->ray.dir_y = game->player.dir_y
+		+ (game->player.plane_y * game->ray.camera_x);
 	game->ray.map_x = (int)game->player.pos_x;
 	game->ray.map_y = (int)game->player.pos_y;
-	// costant increment for side_dist
 	game->ray.delta_dist_x = fabs(1.0 / game->ray.dir_x);
 	game->ray.delta_dist_y = fabs(1.0 / game->ray.dir_y);
+}
 
+static void	init_steps(t_game *game)
+{
 	if (game->ray.dir_x < 0)
 	{
 		game->ray.step_x = -1;
-		// (distance from the ray starting position to the first side to the left) * delta_dist_x = Euclidean distance
-		game->ray.side_dist_x = (game->player.pos_x - game->ray.map_x) * game->ray.delta_dist_x;
+		game->ray.side_dist_x = (game->player.pos_x - game->ray.map_x)
+			* game->ray.delta_dist_x;
 	}
 	else
 	{
 		game->ray.step_x = 1;
-		game->ray.side_dist_x = (game->ray.map_x + 1.0 - game->player.pos_x) * game->ray.delta_dist_x;
+		game->ray.side_dist_x = (game->ray.map_x + 1.0 - game->player.pos_x)
+			* game->ray.delta_dist_x;
 	}
 	if (game->ray.dir_y < 0)
 	{
 		game->ray.step_y = -1;
-		game->ray.side_dist_y = (game->player.pos_y - game->ray.map_y) * game->ray.delta_dist_y;
+		game->ray.side_dist_y = (game->player.pos_y - game->ray.map_y)
+			* game->ray.delta_dist_y;
 	}
 	else
 	{
 		game->ray.step_y = 1;
-		game->ray.side_dist_y = (game->ray.map_y + 1.0 - game->player.pos_y) * game->ray.delta_dist_y;
+		game->ray.side_dist_y = (game->ray.map_y + 1.0 - game->player.pos_y)
+			* game->ray.delta_dist_y;
 	}
+}
 
-	// DDA
-	// Increments the ray by 1 square until hit
+static int	dda(t_game *game)
+{
+	int	side;
+
+	side = 0;
 	while (!game->ray.hit)
 	{
-		// jump to nex square x or else y
 		if (game->ray.side_dist_x < game->ray.side_dist_y)
 		{
 			game->ray.side_dist_x += game->ray.delta_dist_x;
@@ -56,92 +61,124 @@ void	raycasting(t_game *game, int screen_x)
 			game->ray.map_y += game->ray.step_y;
 			side = 1;
 		}
-		if (game->ray.map_x >= 0 && game->ray.map_x < game->map.width && game->ray.map_y >= 0 && game->ray.map_y < game->map.height)
+		if (game->ray.map_x >= 0 && game->ray.map_x < game->map.width
+			&& game->ray.map_y >= 0 && game->ray.map_y < game->map.height)
 		{
-			// check for an hit
 			if (game->map.grid[game->ray.map_y][game->ray.map_x] == '1')
 				game->ray.hit = 1;
 		}
 	}
+	return (side);
+}
+
+static void	calculate_perp_dist(t_game *game, int side)
+{
 	if (side == 0)
-		// calculate distace = side_dist, but we need to go a step back because with dda it's touching the wall.
-		game->ray.perp_wall_dist = (game->ray.side_dist_x - game->ray.delta_dist_x);
+		game->ray.perp_wall_dist = game->ray.side_dist_x
+			- game->ray.delta_dist_x;
 	else
-		game->ray.perp_wall_dist = (game->ray.side_dist_y - game->ray.delta_dist_y);
-	
+		game->ray.perp_wall_dist = game->ray.side_dist_y
+			- game->ray.delta_dist_y;
+}
+
+static void	render_debug_hit(t_game *game, int side)
+{
+	double	intersection_x;
+	double	intersection_y;
+
+	intersection_x = game->player.pos_x
+		+ (game->ray.dir_x * game->ray.perp_wall_dist);
+	intersection_y = game->player.pos_y
+		+ (game->ray.dir_y * game->ray.perp_wall_dist);
+	if (side)
+		draw_circle(game, intersection_x * 32,
+			intersection_y * 32, 1, 0xFF0000);
+	else
+		draw_circle(game, intersection_x * 32,
+			intersection_y * 32, 1, 0xFF00FF);
+}
+
+static void	init_render_params(t_game *game)
+{
+	game->render.line_height = (int)(game->mlx.win_height
+			/ game->ray.perp_wall_dist);
+	game->render.draw_start = -game->render.line_height
+		/ 2 + game->mlx.win_height / 2;
+	if (game->render.draw_start < 0)
+		game->render.draw_start = 0;
+	game->render.draw_end = game->render.line_height
+		/ 2 + game->mlx.win_height / 2;
+	if (game->render.draw_end >= game->mlx.win_height)
+		game->render.draw_end = game->mlx.win_height - 1;
+}
+
+static void	calculate_texture_coords(t_game *game, int side)
+{
+	if (side == 0)
+		game->render.wall_x = game->player.pos_y
+			+ (game->ray.perp_wall_dist * game->ray.dir_y);
+	else
+		game->render.wall_x = game->player.pos_x
+			+ (game->ray.perp_wall_dist * game->ray.dir_x);
+	game->render.wall_x -= floor(game->render.wall_x);
+	game->render.texture_x = (int)(game->render.wall_x
+			* (double)game->render.texture->width);
+	if (side == 0 && game->ray.dir_x < 0)
+		game->render.texture_x = game->render.texture->width
+			- game->render.texture_x - 1;
+	if (side == 1 && game->ray.dir_y > 0)
+		game->render.texture_x = game->render.texture->width
+			- game->render.texture_x - 1;
+}
+
+static void	draw_wall_slice(t_game *game, int screen_x)
+{
+	double			step;
+	double			texture_pos;
+	int				y;
+	int				texture_y;
+	unsigned int	color;
+
+	step = (1.0 * game->render.texture->height) / game->render.line_height;
+	texture_pos = (game->render.draw_start - game->mlx.win_height / 2
+			+ game->render.line_height / 2) * step;
+	y = game->render.draw_start;
+	while (y < game->render.draw_end)
+	{
+		texture_y = (int)texture_pos & (game->render.texture->height - 1);
+		texture_pos += step;
+		color = get_pixel_color(game->render.texture,
+				game->render.texture_x, texture_y);
+		put_pixel(game, screen_x, y, color);
+		y++;
+	}
+}
+
+static void	render_wall(t_game *game, int screen_x, int side)
+{
+	init_render_params(game);
+	if (side == 0 && game->ray.dir_x > 0)
+		game->render.texture = &game->textures[3]; // West
+	else if (side == 0)
+		game->render.texture = &game->textures[2]; // East
+	else if (side == 1 && game->ray.dir_y > 0)
+		game->render.texture = &game->textures[1]; // South
+	else
+		game->render.texture = &game->textures[0]; // North
+	calculate_texture_coords(game, side);
+	draw_wall_slice(game, screen_x);
+}
+
+void	raycasting(t_game *game, int screen_x)
+{
+	int	side;
+
+	init_ray(game, screen_x);
+	init_steps(game);
+	side = dda(game);
+	calculate_perp_dist(game, side);
 	if (game->ray.hit && DEBUG)
-	{
-		double intersection_x = game->player.pos_x + game->ray.dir_x * game->ray.perp_wall_dist;
-		double intersection_y = game->player.pos_y + game->ray.dir_y * game->ray.perp_wall_dist;
-		if (side)
-			draw_circle(game, intersection_x * 32, intersection_y * 32, 1, 0xFF0000);
-		else
-			draw_circle(game, intersection_x * 32, intersection_y * 32, 1, 0xFF00FF);
-	}
+		render_debug_hit(game, side);
 	else if (game->ray.hit)
-	{
-		int lineHeight = (int)(game->mlx.win_height / game->ray.perp_wall_dist);
-		int drawStart = -lineHeight / 2 + game->mlx.win_height / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + game->mlx.win_height / 2;
-		if(drawEnd >= game->mlx.win_height)
-			drawEnd = game->mlx.win_height - 1;
-
-		int texture_index;
-		if (side == 0)
-		{
-			if (game->ray.dir_x > 0)
-				texture_index = 3;
-			else
-				texture_index = 2;
-		}
-		else
-		{
-			if (game->ray.dir_y > 0)
-				texture_index = 1;
-			else
-				texture_index = 0;
-		}
-		t_texture *texture = &game->textures[texture_index];
-
-		// exact position of the hit
-		double wallX;
-		if (side == 0)
-			wallX = game->player.pos_y + (game->ray.perp_wall_dist * game->ray.dir_y);
-		else
-			wallX = game->player.pos_x + (game->ray.perp_wall_dist * game->ray.dir_x);
-		wallX -= floor(wallX);
-
-		// exact pixel of the texture
-		int texX = (int)(wallX * (double)texture->width);
-		if (side == 0 && game->ray.dir_x < 0)
-			texX = texture->width - texX - 1;
-		if (side == 1 && game->ray.dir_y > 0)
-			texX = texture->width - texX - 1;
-		
-		// How much to increase the texture coordinate per screen pixel
-		double step = (1.0 * texture->height) / lineHeight;
-		// Starting texture coordinate
-		double texPos = (drawStart - (game->mlx.win_height / 2) + (lineHeight / 2)) * step;
-
-		// draw a line in the y dir
-
-		for(int y = drawStart; y<drawEnd; y++)
-		{
-			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-			int texY = (int)texPos & (texture->height - 1);
-			texPos += step;
-			unsigned int color = get_pixel_color(texture, texX, texY);
-			//if (side == 1) color = (color >> 1) & 8355711;
-			put_pixel(game, screen_x, y, color);
-		}
-		/*
-		while (drawStart <= drawEnd)
-		{
-			put_pixel(game, screen_x, drawStart, 0x0000FF);
-			drawStart++;
-		}
-		*/
-	}
+		render_wall(game, screen_x, side);
 }
