@@ -20,7 +20,6 @@ unsigned int	get_pixel_color(t_texture *texture, int x, int y)
 	bytes_per_pixel = texture->bits_per_pixel / 8;
 	// Calcola offset totale usando la formula chiara
 	offset = (y * texture->line_length) + (x * bytes_per_pixel);
-
 	// Punta al pixel corretto
 	pixel = texture->addr + offset;
 	return (*(unsigned int *)pixel);
@@ -37,7 +36,7 @@ void	put_pixel(t_game *game, int x, int y, int color)
 
 void	draw_circle(t_game *game, int cx, int cy, int radius, int color)
 {
-	int x; 
+	int x;
 	int y;
 	int r2;
 	

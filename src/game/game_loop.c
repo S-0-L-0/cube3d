@@ -104,8 +104,11 @@ int render_frame(t_game *game)
 	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
-	draw_torch(game);
-	draw_crosshair(game);
+	if (!DEBUG)
+	{
+		draw_torch(game);
+		draw_crosshair(game);
+	}
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 	return (0);
 }
