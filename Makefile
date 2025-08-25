@@ -14,6 +14,12 @@ CFILES = \
 			src/game/game_loop.c \
 			src/game/raycasting.c \
 			src/utils/get_next_line.c \
+			src/game/movement.c \
+			src/game/hooks.c \
+			src/game/utils.c \
+			src/game/2d.c \
+			src/game/minimap.c \
+			src/game/hud.c
 
 OBJ = $(CFILES:.c=.o)
 CC = gcc

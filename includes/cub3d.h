@@ -90,6 +90,13 @@ typedef struct s_mlx {
 	int win_height;       // Altezza della finestra
 } t_mlx;
 
+typedef struct s_time {
+	double		time;
+    double		old_time;
+    double		frame_time;
+	double		start_time;
+}	t_time;
+
 typedef struct	s_keys
 {
 	bool w;
@@ -98,6 +105,7 @@ typedef struct	s_keys
 	bool d;
 	bool left;
 	bool right;
+	int		last_mouse_x;
 }	t_keys;
 
 typedef struct s_game {
@@ -105,8 +113,9 @@ typedef struct s_game {
 	t_player player;      // Struttura del giocatore
 	t_mlx mlx;            // Struttura MLX
 	t_ray ray;
-	t_texture textures[4]; // Array di texture (N, S, E, W)
+	t_texture textures[10]; // Array di texture (N, S, E, W)
 	t_keys	keys;
+	t_time	time;
 } t_game;
 
 // Main functions
@@ -175,5 +184,34 @@ void	raycasting(t_game *game, int screen_x);
 void	draw_map_2d(t_game *game);
 void	draw_player_2d(t_game *game);
 void	draw_minimap(t_game *game);
+
+// movement.c
+void	update_player(t_game *game);
+void	rot_player(t_game *game, double direction, double speed);
+void	move_player(t_game *game, double dir_x, double dir_y);
+
+// hooks.c
+int	mouse_hook(int x, int y, t_game *game);
+int	key_press(int keycode, t_game *game);
+int	key_release(int keycode, t_game *game);
+int close_window(t_game *game);
+
+// utils.c
+long long	get_time_ms();
+unsigned int	get_pixel_color(t_texture *texture, int x, int y);
+void	put_pixel(t_game *game, int x, int y, int color);
+void	draw_circle(t_game *game, int cx, int cy, int radius, int color);
+
+// 2d.c
+void	draw_map_2d(t_game *game);
+void	draw_player_2d(t_game *game);
+
+// minimap.c
+void	draw_minimap(t_game *game);
+void	draw_border(t_game *game);
+
+// hud.c
+void	draw_crosshair(t_game *game);
+void	draw_torch(t_game *game);
 
 #endif

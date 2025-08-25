@@ -42,12 +42,17 @@ int main(int argc, char **argv)
 
 
 	init_game(&game);
-    
-    // Game loop...
-    game_loop(&game);
-    
-    cleanup_game(&game);
-    return (0);
+	
+	// STEP 2: PARSING COMPLETO + SETUP GRAFICO
+	// Questo step riempie completamente game->map e game->player,
+	// inizializza MLX e carica tutte le texture
+	if (parse_map(argv[1], &game) != 0)
+		return (1);
+	
+	// STEP 3: AVVIO GAME LOOP INFINITO
+	// Gestisce rendering continuo + eventi tastiera/mouse
+
+	game_loop(&game);
 	
 	return (0);
 }
