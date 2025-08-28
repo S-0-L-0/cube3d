@@ -110,6 +110,7 @@ int render_frame(t_game *game)
 		draw_crosshair(game);
 	}
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
+	check_door(game);
 	return (0);
 }
 

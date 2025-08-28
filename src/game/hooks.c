@@ -59,6 +59,11 @@ int	key_press(int keycode, t_game *game)
 		game->keys.right = true;
         //rot_player(game, 1.0);
     }
+	if (keycode == 101)
+	{
+		mlx_string_put(game->mlx.mlx, game->mlx.win, 100, 100, 0xFFFFFF, "Press E");
+		toggle_door(game);
+	}
 
 /*	APPLE
 	else if (keycode == 13) // W

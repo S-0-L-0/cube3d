@@ -56,6 +56,7 @@ typedef struct s_ray {
 	int step_y;           // Direzione del passo Y (+1 o -1)
 	int hit;              // Se è stato colpito un muro (1) o no (0)
 	int side;             // Se è stato colpito un lato NS (0) o EW (1)
+	int door;
 	double	intersection_x;
 	double	intersection_y;
 } t_ray;
@@ -115,7 +116,7 @@ typedef struct s_game {
 	t_player player;      // Struttura del giocatore
 	t_mlx mlx;            // Struttura MLX
 	t_ray ray;
-	t_texture textures[10]; // Array di texture (N, S, E, W)
+	t_texture textures[16]; // Array di texture (N, S, E, W)
 	t_keys	keys;
 	t_time	time;
 	t_render	render;
@@ -199,5 +200,9 @@ void	draw_border(t_game *game);
 // hud.c
 void	draw_crosshair(t_game *game);
 void	draw_torch(t_game *game);
+
+// door.c
+void	toggle_door(t_game *game);
+void	check_door(t_game *game);
 
 #endif

@@ -17,6 +17,10 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 		game->player.pos_y = new_y;
 	if (game->map.grid[(int)game->player.pos_y][(int)new_x] == '0')
 		game->player.pos_x = new_x;
+	if (game->map.grid[(int)new_y][(int)game->player.pos_x] == 'd')
+		game->player.pos_y = new_y;
+	if (game->map.grid[(int)game->player.pos_y][(int)new_x] == 'd')
+		game->player.pos_x = new_x;
 }
 
 void	rot_player(t_game *game, double rot_speed)

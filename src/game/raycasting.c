@@ -65,7 +65,15 @@ static int	dda(t_game *game)
 			&& game->ray.map_y >= 0 && game->ray.map_y < game->map.height)
 		{
 			if (game->map.grid[game->ray.map_y][game->ray.map_x] == '1')
+			{
 				game->ray.hit = 1;
+				game->ray.door = 0;
+			}
+			else if (game->map.grid[game->ray.map_y][game->ray.map_x] == 'D')
+			{
+				game->ray.hit = 1;
+				game->ray.door = 1;
+			}
 		}
 	}
 	return (side);
@@ -149,7 +157,8 @@ static void	draw_wall_slice(t_game *game, int screen_x)
 		texture_pos += step;
 		color = get_pixel_color(game->render.texture,
 				game->render.texture_x, texture_y);
-		put_pixel(game, screen_x, y, color);
+		if (color != 0xFF000000)
+			put_pixel(game, screen_x, y, color);
 		y++;
 	}
 }
@@ -157,7 +166,9 @@ static void	draw_wall_slice(t_game *game, int screen_x)
 static void	render_wall(t_game *game, int screen_x, int side)
 {
 	init_render_params(game);
-	if (side == 0 && game->ray.dir_x > 0)
+	if (game->ray.door)
+		game->render.texture = &game->textures[10];
+	else if (side == 0 && game->ray.dir_x > 0)
 		game->render.texture = &game->textures[3]; // West
 	else if (side == 0)
 		game->render.texture = &game->textures[2]; // East

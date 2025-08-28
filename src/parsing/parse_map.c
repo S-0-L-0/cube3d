@@ -130,6 +130,49 @@ int parse_map(char *map_path, t_game *game)
 		free_mlx(&game->mlx);
 		return (1);
 	}
+	if (init_texture(&game->textures[10], "assets/textures/door.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/door.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}
+	/*
+	if (init_texture(&game->textures[11], "assets/textures/doorside.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/doorside.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}
+	if (init_texture(&game->textures[9], "assets/textures/torch70_5.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/torch1.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}
+	if (init_texture(&game->textures[9], "assets/textures/torch70_5.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/torch1.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}
+	if (init_texture(&game->textures[9], "assets/textures/torch70_5.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/torch1.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}
+	if (init_texture(&game->textures[9], "assets/textures/torch70_5.xpm", game->mlx.mlx) != 0)
+	{
+		printf("Error\nFailed to load torch: %s\n", "assets/textures/torch1.xpm");
+		free_map(&game->map);
+		free_mlx(&game->mlx);
+		return (1);
+	}*/
 
 	// TODO: init player con dati dalla mappa
 	return (0);

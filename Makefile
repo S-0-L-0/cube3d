@@ -17,7 +17,8 @@ CFILES = \
 			src/game/utils.c \
 			src/game/2d.c \
 			src/game/minimap.c \
-			src/game/hud.c
+			src/game/hud.c \
+			src/game/door.c
 
 OBJ = $(CFILES:.c=.o)
 CC = gcc
