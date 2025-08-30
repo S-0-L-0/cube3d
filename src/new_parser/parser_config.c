@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:11 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/25 16:45:11 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/30 18:39:57 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
     ** Scorreremo fino a trovare l'inizio della mappa
     */
     i = 0;
+    parse->map_start_line = -1;
     
     /*
     ** LOOP PRINCIPALE DI PARSING CONFIGURAZIONE
@@ -30,6 +31,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
     ** 1. Ci sono ancora righe da leggere
     ** 2. Non abbiamo ancora trovato la mappa
     */
+
     while (parse->file_content[i])
     {
         /*
@@ -37,6 +39,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
         ** Le linee vuote sono permesse tra gli elementi di config
         ** Le saltiamo semplicemente
         */
+        
         if (is_empty_line(parse->file_content[i]))
         {
             i++;
@@ -49,7 +52,7 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
         ** salviamo l'indice e usciamo dal parsing della configurazione
         */
         if (is_map_line(parse->file_content[i]))
-        {
+        {   
             printf("\n");
             parse->map_start_line = i;
             break;  /* Mappa trovata, stop parsing config */
@@ -99,9 +102,9 @@ int parse_config_elements(t_parse_data *parse, t_map *map)
     ** Se siamo usciti dal loop senza trovare la mappa
     ** (map_start_line è ancora 0), il file non contiene una mappa
     */
-    if (parse->map_start_line == 0)
+    if (parse->map_start_line == -1)
     {
-        printf("enzomma\n");
+
         printf("Error\nNo map found in file\n");
         return (1);
     }
@@ -125,6 +128,7 @@ int parse_texture_line(char *line, t_map *map, t_parse_data *parse)
     ** CONTROLLO NULL
     ** Sicurezza base per evitare segfault
     */
+    
     if (!line || !map || !parse)
         return (1);
     
@@ -144,28 +148,28 @@ int parse_texture_line(char *line, t_map *map, t_parse_data *parse)
     {
         identifier = "NO";
         dest_texture = &map->north_texture;
-        loaded_flag = (int *)&parse->north_loaded;
+        loaded_flag = &parse->north_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "SO ", 3) == 0)
     {
         identifier = "SO";
         dest_texture = &map->south_texture;
-        loaded_flag = (int *)&parse->south_loaded;
+        loaded_flag = &parse->south_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "WE ", 3) == 0)
     {
         identifier = "WE";
         dest_texture = &map->west_texture;
-        loaded_flag = (int *)&parse->west_loaded;
+        loaded_flag = &parse->west_loaded;
         path_start = line + 3;
     }
     else if (ft_strncmp(line, "EA ", 3) == 0)
     {
         identifier = "EA";
         dest_texture = &map->east_texture;
-        loaded_flag = (int *)&parse->east_loaded;
+        loaded_flag = &parse->east_loaded;
         path_start = line + 3;
     }
     else
@@ -182,11 +186,12 @@ int parse_texture_line(char *line, t_map *map, t_parse_data *parse)
     ** CONTROLLO DUPLICATI
     ** Se questa texture è già stata definita, è un errore
     */
-   /*  if (*loaded_flag)
+    
+    if (*loaded_flag)
     {
         printf("Error\nDuplicate %s texture definition\n", identifier);
         return (1);
-    } */
+    }
     
     /*
     ** SKIP SPAZI DOPO L'IDENTIFIER
@@ -428,130 +433,107 @@ int validate_config_complete(t_map *map, t_parse_data *parse)
     return (error);
 }
 
-int extract_rgb_values(char *str, int *rgb)
+static int parse_single_rgb_value(char *str, int *pos)
 {
-    int     i;
-    int     component;
-    int     value;
+    int value = 0;
+    int has_digit = 0;
     
-    /*
-    ** INIZIALIZZAZIONE
-    ** component: quale componente stiamo parsando (0=R, 1=G, 2=B)
-    ** value: valore numerico corrente che stiamo costruendo
-    ** i: indice nella stringa
-    */
-    component = 0;
-    value = 0;
-    i = 0;
+    /* Skip leading whitespace */
+    while (str[*pos] && (str[*pos] == ' ' || str[*pos] == '\t'))
+        (*pos)++;
     
-    /*
-    ** PARSING LOOP
-    ** Scorriamo la stringa carattere per carattere
-    ** Formato atteso: "255,255,255" o "255, 255, 255" (con spazi)
-    */
-    while (str[i])
+    /* Parse digits */
+    while (str[*pos] && str[*pos] >= '0' && str[*pos] <= '9')
     {
-        /*
-        ** SKIP SPAZI
-        ** Gli spazi sono permessi ovunque tra i numeri
-        */
-        if (str[i] == ' ' || str[i] == '\t')
-        {
-            i++;
-            continue;
-        }
+        value = value * 10 + (str[*pos] - '0');
+        has_digit = 1;
         
-        /*
-        ** GESTIONE VIRGOLA
-        ** La virgola separa i componenti RGB
-        */
-        if (str[i] == ',')
-        {
-            /*
-            ** CONTROLLO NUMERO COMPONENTI
-            ** Non possiamo avere più di 3 componenti
-            */
-            if (component >= 3)
-            {
-                printf("Error\nToo many values in RGB (expected 3)\n");
-                return (1);
-            }
-            
-            /*
-            ** VALIDA RANGE 0-255
-            */
-            if (value < 0 || value > 255)
-            {
-                printf("Error\nRGB value out of range [0-255]: %d\n", value);
-                return (1);
-            }
-            
-            /*
-            ** SALVA IL VALORE E PASSA AL PROSSIMO
-            */
-            rgb[component] = value;
-            component++;
-            value = 0;
-            i++;
-            continue;
-        }
-        
-        /*
-        ** PARSING CIFRA
-        ** Deve essere un numero tra 0 e 9
-        */
-        if (str[i] < '0' || str[i] > '9')
-        {
-            printf("Error\nInvalid character in RGB value: '%c'\n", str[i]);
-            return (1);
-        }
-        
-        /*
-        ** COSTRUZIONE VALORE
-        ** Moltiplica per 10 e aggiungi la nuova cifra
-        ** Esempio: "255" → 0*10+2=2, 2*10+5=25, 25*10+5=255
-        */
-        value = value * 10 + (str[i] - '0');
-        
-        /*
-        ** CONTROLLO OVERFLOW IMMEDIATO
-        ** Se il valore supera 255 già durante il parsing
-        */
+        /* Early overflow check */
         if (value > 255)
         {
             printf("Error\nRGB value exceeds 255\n");
-            return (1);
+            return (-1);
         }
-        
-        i++;
+        (*pos)++;
     }
     
-    /*
-    ** SALVA L'ULTIMO VALORE
-    ** Dopo l'ultimo numero non c'è virgola, quindi
-    ** dobbiamo salvare l'ultimo valore qui
-    */
-    if (component != 2)
+    /* Skip trailing whitespace */
+    while (str[*pos] && (str[*pos] == ' ' || str[*pos] == '\t'))
+        (*pos)++;
+    
+    /* Must have at least one digit */
+    if (!has_digit)
     {
-        printf("Error\nMissing RGB values (expected 3, got %d)\n", 
-               component + 1);
+        printf("Error\nEmpty RGB component\n");
+        return (-1);
+    }
+    
+    return (value);
+}
+
+/*
+** HELPER: Expect and consume a comma at current position
+** Returns 0 on success, 1 on error
+*/
+static int expect_comma(char *str, int *pos)
+{
+    if (str[*pos] != ',')
+    {
+        printf("Error\nExpected comma in RGB format\n");
+        return (1);
+    }
+    (*pos)++;
+    return (0);
+}
+
+/*
+** MAIN FUNCTION: Simplified RGB parser using helper functions
+*/
+
+int extract_rgb_values(char *str, int *rgb)
+{
+    int pos = 0;
+    int value;
+    
+    if (!str || !rgb)
+        return (1);
+    
+    
+    /* Parse R value */
+    value = parse_single_rgb_value(str, &pos);
+    if (value < 0)
+        return (1);
+    rgb[0] = value;
+    
+    /* Expect comma */
+    if (expect_comma(str, &pos) != 0)
+        return (1);
+    
+    /* Parse G value */
+    value = parse_single_rgb_value(str, &pos);
+    if (value < 0)
+        return (1);
+    rgb[1] = value;
+    
+    /* Expect comma */
+    if (expect_comma(str, &pos) != 0)
+        return (1);
+    
+    /* Parse B value */
+    value = parse_single_rgb_value(str, &pos);
+    if (value < 0)
+        return (1);
+    rgb[2] = value;
+    
+    /* Check for trailing content */
+    while (str[pos] && (str[pos] == ' ' || str[pos] == '\t'))
+        pos++;
+    
+    if (str[pos] != '\0')
+    {
+        printf("Error\nUnexpected content after RGB values: '%c'\n", str[pos]);
         return (1);
     }
     
-    /*
-    ** VALIDA ULTIMO VALORE
-    */
-    if (value < 0 || value > 255)
-    {
-        printf("Error\nRGB value out of range [0-255]: %d\n", value);
-        return (1);
-    }
-    
-    rgb[component] = value;
-    
-    /*
-    ** SUCCESSO
-    ** Tutti e 3 i valori RGB sono stati parsati correttamente
-    */
     return (0);
 }

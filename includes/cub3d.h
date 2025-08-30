@@ -22,10 +22,10 @@ typedef struct s_parse_data {
     int     texture_count;      // Contatore texture caricate (max 4)
     int     floor_set;          // Flag: floor color settato?
     int     ceiling_set;        // Flag: ceiling color settato?
-    bool    north_loaded;       // Flag per evitare duplicati
-    bool    south_loaded;
-    bool    east_loaded;
-    bool    west_loaded;
+    int    north_loaded;       // Flag per evitare duplicati
+    int    south_loaded;
+    int    east_loaded;
+    int    west_loaded;
 } t_parse_data;
 
 typedef struct s_map {
@@ -127,7 +127,7 @@ int	set_textures(t_game *game);
 int init_texture(t_texture *texture, char *texture_path, void *mlx);
 
 // parser_validation.c
-int		validate_arguments(int argc);
+int		validate_arguments(int argc, char **argv);
 int		open_and_validate_file(char *filepath);
 int 	validate_texture_file(char *path, char *texture_name);
 

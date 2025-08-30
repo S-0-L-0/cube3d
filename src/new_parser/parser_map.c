@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/25 19:07:05 by edforte          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:51:32 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int parse_map(t_parse_data *parse, t_map *map, t_player *player)
     ** Copiamo ogni riga dalla struttura parse alla griglia finale
     ** Le righe potrebbero avere lunghezze diverse per ora
     */
+    
     i = 0;
     while (i < map->height)
     {
@@ -91,6 +92,7 @@ int parse_map(t_parse_data *parse, t_map *map, t_player *player)
         ** Usiamo strdup per allocare e copiare la riga
         ** Ogni riga è indipendente e può essere liberata separatamente
         */
+        
         map->grid[i] = ft_strdup(parse->file_content[map_start + i]);
         if (!map->grid[i])
         {
@@ -201,9 +203,11 @@ int normalize_map_width(t_map *map)
     ** Scorriamo tutte le righe per trovare la più lunga
     */
     max_width = 0;
+    
     i = 0;
     while (i < map->height)
     {
+
         current_len = ft_strlen(map->grid[i]);
         if (current_len > max_width)
             max_width = current_len;
@@ -304,83 +308,49 @@ int normalize_map_width(t_map *map)
 int find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end)
 {
     int i;
-    int found_end;
     
-    i = 0;
-    found_end = 0;
-    /*
-    ** INIZIALIZZAZIONE
-    ** map_start_line è stato già settato da parse_config_elements
-    ** quando ha trovato la prima linea della mappa
-    */
-
-   
     if (parse->map_start_line == 0)
     {
-        printf("fanculo\n");
         printf("Error\nNo map found in file\n");
         return (1);
     }
     
-    /*
-    ** IMPOSTA INIZIO MAPPA
-    ** Usiamo il valore già trovato da parse_config_elements
-    */
     *map_start = parse->map_start_line;
     
-    /*
-    ** TROVA FINE MAPPA
-    ** La fine della mappa è l'ultima riga non vuota
-    ** partendo da map_start_line
+    /* 
+    ** TROVA LA FINE DELLA MAPPA CONTIGUA
+    ** Fermati alla prima riga vuota dopo l'inizio
     */
-    *map_end = *map_start;
-    found_end = 0;
     i = *map_start;
+    *map_end = *map_start; // Inizializza con la prima riga
     
-    /*
-    ** SCANSIONE PER TROVARE L'ULTIMA RIGA NON VUOTA
-    ** Continuiamo a scorrere aggiornando map_end
-    ** ogni volta che troviamo una riga non vuota
-    */
     while (parse->file_content[i])
     {
-        if (!is_empty_line(parse->file_content[i]))
+        if (is_empty_line(parse->file_content[i]))
         {
-            *map_end = i;  /* Aggiorna l'ultima riga non vuota trovata */
-            found_end = 1;
+            /* Prima riga vuota trovata = fine della mappa contigua */
+            break;
         }
+        
+        /* Verifica che sia effettivamente una riga di mappa */
+        if (!is_map_line(parse->file_content[i]))
+        {
+            printf("Error\nInvalid line in map: %s\n", parse->file_content[i]);
+            return (1);
+        }
+        
+        *map_end = i; /* Aggiorna la fine solo per righe non vuote */
         i++;
     }
     
-    /*
-    ** VERIFICA CHE ABBIAMO TROVATO ALMENO UNA RIGA DI MAPPA
-    ** Se map_end è ancora uguale a map_start e non abbiamo
-    ** trovato righe non vuote, c'è un problema
-    */
-    if (!found_end)
+    /* Verifica dimensioni minime */
+    if (*map_end - *map_start + 1 < 3)
     {
-        printf("Error\nMap appears to be empty\n");
+        printf("Error\nMap too small (minimum 3 rows)\n");
         return (1);
     }
     
-    /*
-    ** VERIFICA CHE LA MAPPA NON SIA TROPPO GRANDE
-    ** 
-    ** LIMITE: 800 righe massimo
-    ** 
-    ** PERCHÉ 800:
-    ** - File totale: max 999 righe (limite in read_file_content)
-    ** - Config minima: ~6 righe (4 texture + 2 colori)
-    ** - Margine sicurezza: ~193 righe per spazi e commenti
-    ** - Memoria per 800x800: ~640KB (molto gestibile)
-    ** - Stack flood-fill: sicuro con ricorsione fino a 800x800
-    ** - Performance: ancora accettabile per il rendering
-    ** 
-    ** Con 800 abbiamo la CERTEZZA di non avere problemi di:
-    ** - Memory overflow
-    ** - Stack overflow nel flood-fill ricorsivo
-    ** - Performance degradation eccessiva
-    */
+    /* Verifica dimensioni massime */
     if (*map_end - *map_start + 1 > 800)
     {
         printf("Error\nMap too large (maximum 800 rows)\n");
@@ -388,43 +358,9 @@ int find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end)
         return (1);
     }
     
-    /*
-    ** VERIFICA CHE CI SIA ALMENO UNA RIGA
-    ** Controllo di sicurezza aggiuntivo
-    ** (non dovrebbe mai succedere, ma meglio essere sicuri)
-    */
-    if (*map_end < *map_start)
-    {
-        printf("Error\nInvalid map boundaries\n");
-        return (1);
-    }
-    
-    /*
-    ** CONTROLLO DIMENSIONE MINIMA
-    ** Una mappa deve essere almeno 3x3 per essere valida
-    ** (muri su tutti i lati + almeno uno spazio interno)
-    */
-    if (*map_end - *map_start + 1 < 3)
-    {
-        printf("Error\nMap too small (minimum 3 rows)\n");
-        return (1);
-    }
-    
-    /*
-    ** LOG INFORMATIVO (OPZIONALE - DEBUG)
-    */
-    /*
-    printf("Map boundaries: lines %d to %d (%d rows total)\n", 
-           *map_start, *map_end, *map_end - *map_start + 1);
-    */
-    
-    /*
-    ** SUCCESSO
-    ** Abbiamo trovato dove inizia e finisce la mappa
-    ** e verificato che rispetti tutti i limiti di sicurezza
-    */
     return (0);
 }
+
 
 int extract_player_position(t_map *map, t_player *player)
 {

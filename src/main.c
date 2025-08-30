@@ -183,12 +183,15 @@ int main(int argc, char **argv)
 	ft_memset(&parse_data, 0, sizeof(t_parse_data));
 	
 	// Parsing con struttura temporanea
+	printf("daje\n");
 	if (parser(argc, argv, &game, &parse_data) != 0)
 	{
 		cleanup_parse_data(&parse_data);  // Pulisci dati temporanei
 		cleanup_game(&game);              // Pulisci dati gioco
+		printf("GIUSTO\n");
 		return (1);
 	}
+	printf("sbagliato\n");
 	
 	
    
@@ -201,8 +204,11 @@ int main(int argc, char **argv)
 	// STEP 2: PARSING COMPLETO + SETUP GRAFICO
 	// Questo step riempie completamente game->map e game->player,
 	// inizializza MLX e carica tutte le texture
+
 	if (parse_map(&parse_data, &game.map, &game.player) != 0)
+	{
 		return (1);
+	}
 	
 	// Parse data non serve più, libera subito
 	// cleanup_parse_data(&parse_data);
