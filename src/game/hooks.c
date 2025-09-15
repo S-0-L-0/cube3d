@@ -1,28 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   hooks.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/15 17:36:23 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 17:41:13 by edforte          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/cub3d.h"
 
 int	mouse_hook(int x, int y, t_game *game)
 {
+	int		delta_x;
+	double	rot_speed;
+
 	(void)y;
-	if (x < game->mlx.win_width / 2)
-	{
-		rot_player(game, -1.0, 5.0);
-	}
-	else if (x > game->mlx.win_width / 2)
-	{
-		rot_player(game, 1.0, 5.0);
-	}
+	delta_x = x - (game->mlx.win_width / 2);
+	if (delta_x == 0)
+		return (0);
+	rot_speed = ((double)delta_x * 0.030) * game->time.frame_time;
+	rot_player(game, rot_speed);
 	return (0);
 }
 
@@ -63,6 +51,11 @@ int	key_press(int keycode, t_game *game)
 	{
 		printf("Right arrow pressed\n");
 		game->keys.right = true;
+	}
+	if (keycode == 101)
+	{
+		mlx_string_put(game->mlx.mlx, game->mlx.win, 100, 100, 0xFFFFFF, "Press E");
+		toggle_door(game);
 	}
 	return (0);
 }

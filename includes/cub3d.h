@@ -26,6 +26,10 @@
 
 # define BONUS 1
 # define DEBUG 0
+#define TILE_SIZE 12
+#define VIEW_RADIUS 5
+#define MINIMAP_DIM 11
+
 
 typedef struct s_parse_data
 {
@@ -80,6 +84,7 @@ typedef struct s_ray
 	int		step_y;
 	int		hit;
 	int		side;
+	int		door;
 	double	intersection_x;
 	double	intersection_y;
 }	t_ray;
@@ -127,15 +132,27 @@ typedef struct s_keys
 	int		last_mouse_x;
 }	t_keys;
 
+typedef struct s_render
+{
+        int		line_height;
+        int     draw_start;
+        int     draw_end;
+        int     texture_x;
+        double  wall_x;
+        t_texture       *texture;
+}   t_render;
+
+
 typedef struct s_game
 {
 	t_map		map;
 	t_player	player;
 	t_mlx		mlx;
 	t_ray		ray;
-	t_texture	textures[10];
+	t_texture	textures[16];
 	t_keys		keys;
 	t_time		time;
+	t_render	render;
 }	t_game;
 
 // Main functions
@@ -211,7 +228,7 @@ void			draw_minimap(t_game *game);
 
 // movement.c
 void			update_player(t_game *game);
-void			rot_player(t_game *game, double direction, double speed);
+void			rot_player(t_game *game, double speed);
 void			move_player(t_game *game, double dir_x, double dir_y);
 
 // hooks.c
@@ -245,5 +262,9 @@ void			draw_border(t_game *game);
 // hud.c
 void			draw_crosshair(t_game *game);
 void			draw_torch(t_game *game);
+
+// door.c
+void    toggle_door(t_game *game);
+void    check_door(t_game *game);
 
 #endif

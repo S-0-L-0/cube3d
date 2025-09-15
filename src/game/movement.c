@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/15 17:56:37 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 17:58:01 by edforte          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/cub3d.h"
 
 void	move_player(t_game *game, double dir_x, double dir_y)
@@ -29,21 +17,23 @@ void	move_player(t_game *game, double dir_x, double dir_y)
 		game->player.pos_y = new_y;
 	if (game->map.grid[(int)game->player.pos_y][(int)new_x] == '0')
 		game->player.pos_x = new_x;
+	if (game->map.grid[(int)new_y][(int)game->player.pos_x] == 'd')
+		game->player.pos_y = new_y;
+	if (game->map.grid[(int)game->player.pos_y][(int)new_x] == 'd')
+		game->player.pos_x = new_x;
 }
 
-void	rot_player(t_game *game, double direction, double speed)
+void	rot_player(t_game *game, double rot_speed)
 {
-	double	rot_speed;
 	double	old_dir_x;
 	double	old_plane_x;
 
-	rot_speed = game->time.frame_time * speed * direction;
 	old_dir_x = game->player.dir_x;
-	old_plane_x = game->player.plane_x;
 	game->player.dir_x = game->player.dir_x * cos(rot_speed)
 		- game->player.dir_y * sin(rot_speed);
-	game->player.dir_y = old_dir_x * sin(rot_speed) + game->player.dir_y
-		* cos(rot_speed);
+	game->player.dir_y = old_dir_x * sin(rot_speed)
+		+ game->player.dir_y * cos(rot_speed);
+	old_plane_x = game->player.plane_x;
 	game->player.plane_x = game->player.plane_x * cos(rot_speed)
 		- game->player.plane_y * sin(rot_speed);
 	game->player.plane_y = old_plane_x * sin(rot_speed)
@@ -61,7 +51,7 @@ void	update_player(t_game *game)
 	if (game->keys.d)
 		move_player(game, game->player.plane_x, game->player.plane_y);
 	if (game->keys.left)
-		rot_player(game, -1.0, 3.0);
+		rot_player(game, -(3.0 * game->time.frame_time));
 	if (game->keys.right)
-		rot_player(game, 1.0, 3.0);
+		rot_player(game, 3.0 * game->time.frame_time);
 }

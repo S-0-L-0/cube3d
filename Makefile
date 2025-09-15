@@ -20,6 +20,7 @@ CFILES = \
 			src/game/2d.c \
 			src/game/minimap.c \
 			src/game/hud.c \
+			src/game/door.c \
 			src/utils/ft_memset.c \
 
 OBJ = $(CFILES:.c=.o)

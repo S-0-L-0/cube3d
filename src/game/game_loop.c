@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:33:46 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 17:35:55 by edforte          ###   ########.fr       */
+/*   Updated: 2025/06/01 12:15:54 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	drawcast(t_game *game)
 	int	x;
 
 	x = 0;
+	if (DEBUG)
+	{
+		draw_map_2d(game);
+		draw_player_2d(game);
+	}
 	while (x < game->mlx.win_width)
 	{
 		raycasting(game, x);
@@ -66,9 +71,13 @@ int	render_frame(t_game *game)
 		game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
-	draw_torch(game);
-	draw_crosshair(game);
+	if (!DEBUG)
+	{
+		draw_torch(game);
+		draw_crosshair(game);
+	}
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
+	check_door(game);
 	return (0);
 }
 
