@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/30 17:51:32 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/05 18:01:31 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,9 +351,9 @@ int find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end)
     }
     
     /* Verifica dimensioni massime */
-    if (*map_end - *map_start + 1 > 800)
+    if (*map_end - *map_start + 1 > 999994)
     {
-        printf("Error\nMap too large (maximum 800 rows)\n");
+        printf("Error\nMap too large (maximum 999994 rows)\n");
         printf("Current map has %d rows\n", *map_end - *map_start + 1);
         return (1);
     }
@@ -472,8 +472,8 @@ int extract_player_position(t_map *map, t_player *player)
     ** VERIFICA POSIZIONE VALIDA
     ** Il player non può essere sui bordi della mappa
     */
-    if (player->pos_x == 0 || player->pos_x == map->width - 1 ||
-        player->pos_y == 0 || player->pos_y == map->height - 1)
+    if ((int)(player->pos_x - 0.5) == 0 || (int)(player->pos_x - 0.5) == map->width - 1 ||
+    (int)(player->pos_y - 0.5) == 0 || (int)(player->pos_y - 0.5) == map->height - 1)
     {
         printf("Error\nPlayer cannot start on map border\n");
         return (1);

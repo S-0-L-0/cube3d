@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:33:46 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/30 18:40:45 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/05 17:03:59 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int render_frame(t_game *game)
 
 #include <stdio.h>
 
-/* static void print_pn(void)
+static void print_pn(void)
 {
 	printf("\033[38;5;46m");
     printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\n");
@@ -135,7 +135,7 @@ int render_frame(t_game *game)
     printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
     printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
     printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\033[0m\n");
-} */
+}
 
 int game_loop(t_game *game)
 {
@@ -148,7 +148,7 @@ int game_loop(t_game *game)
 	printf("Window size: %dx%d\n", game->mlx.win_width, game->mlx.win_height);
 	printf("Player position: (%.2f, %.2f)\n", game->player.pos_x, game->player.pos_y);
 	printf("Map size: %dx%d\n", game->map.width, game->map.height);
-	//print_pn();
+	print_pn();
 	
 
 	

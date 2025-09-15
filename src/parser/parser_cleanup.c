@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:17 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/25 10:26:05 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/02 12:45:55 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void cleanup_parse_data(t_parse_data *parse)
     ** sta per essere distrutta, ma è buona pratica
     ** per evitare uso accidentale di valori sporchi
     */
-    parse->map_start_line = 0;
+    parse->map_start_line = -1;
     parse->texture_count = 0;
     parse->floor_set = 0;
     parse->ceiling_set = 0;

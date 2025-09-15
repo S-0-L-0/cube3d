@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:33:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/25 15:52:30 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/05 16:27:13 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void free_game(t_game *game)
 	
 	// Libera le texture
 	i = 0;
-	while (i < 4)
+	while (i < 10)
 	{
 		free_texture(&game->textures[i], game->mlx.mlx);
 		i++;

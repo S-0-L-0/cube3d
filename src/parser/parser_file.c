@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:07 by edforte           #+#    #+#             */
-/*   Updated: 2025/08/25 16:18:09 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/05 18:01:07 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int read_file_content(int fd, t_parse_data *parse)
     ** Questo è più che sufficiente per qualsiasi mappa ragionevole
     ** L'ultimo slot sarà riservato per il NULL terminator
     */
-    parse->file_content = (char **)malloc(sizeof(char *) * 1000);
+    parse->file_content = (char **)malloc(sizeof(char *) * 100000);
     if (!parse->file_content)
     {
         printf("Error\nMemory allocation failed\n");
