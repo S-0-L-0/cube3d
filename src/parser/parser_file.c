@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:07 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 15:57:28 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:40:00 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	read_file_content(int fd, t_parse_data *parse)
 	}
 	line_count = 0;
 	line = get_next_line(fd);
-	while (line != NULL && line_count < 999)
+	while (line != NULL && line_count < 100000)
 	{
 		len = 0;
 		while (line[len])
@@ -39,7 +39,7 @@ int	read_file_content(int fd, t_parse_data *parse)
 	}
 	if (line != NULL)
 	{
-		printf("Error\nFile too large (maximum 999 lines)\n");
+		printf("Error\nFile too large (maximum 100000 lines)\n");
 		free(line);
 		while (line_count > 0)
 		{

@@ -1,4 +1,3 @@
-
 NAME = cub3d
 
 CFILES = \
@@ -32,25 +31,39 @@ LIBS = -L./mlx_linux -lmlx -lXext -lX11 -lm
 # LIBS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm
 RM = rm -f
 
+# Directory MLX
+MLX_DIR = ./mlx_linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
+
 # Regola per compilare i file .o
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: $(MLX_LIB) $(NAME)
 
-# Compila MLX prima, poi il programma
-$(NAME): $(OBJ)
-	#@make -C ./mlx_apple
+# Regola per compilare MLX - ora dipende dal file libmlx.a
+$(MLX_LIB):
+	@echo "Compiling MLX..."
+	@if [ -d "$(MLX_DIR)" ]; then \
+		cd $(MLX_DIR) && ./configure; \
+	else \
+		echo "Error: MLX directory $(MLX_DIR) not found!"; \
+		exit 1; \
+	fi
+
+# Compila il programma dopo aver compilato MLX
+$(NAME): $(OBJ) $(MLX_LIB)
 	$(CC) $(OBJ) $(LIBS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJ)
-
+	@if [ -d "$(MLX_DIR)" ]; then \
+		cd $(MLX_DIR) && ./configure clean; \
+	fi
 
 fclean: clean
 	$(RM) $(NAME)
-
 
 re: fclean all

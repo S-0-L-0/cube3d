@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 17:24:15 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:14:35 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@
 
 # define BONUS 1
 # define DEBUG 0
-#define TILE_SIZE 12
-#define VIEW_RADIUS 5
-#define MINIMAP_DIM 11
-
+# define TILE_SIZE 12
+# define VIEW_RADIUS 5
+# define MINIMAP_DIM 11
 
 typedef struct s_parse_data
 {
@@ -134,14 +133,13 @@ typedef struct s_keys
 
 typedef struct s_render
 {
-        int		line_height;
-        int     draw_start;
-        int     draw_end;
-        int     texture_x;
-        double  wall_x;
-        t_texture       *texture;
-}   t_render;
-
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			texture_x;
+	double		wall_x;
+	t_texture	*texture;
+}	t_render;
 
 typedef struct s_game
 {
@@ -264,7 +262,7 @@ void			draw_crosshair(t_game *game);
 void			draw_torch(t_game *game);
 
 // door.c
-void    toggle_door(t_game *game);
-void    check_door(t_game *game);
+void			toggle_door(t_game *game);
+void			check_door(t_game *game);
 
 #endif
