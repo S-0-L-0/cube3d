@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:33:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/05 16:27:13 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/15 16:56:59 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int		ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int	i;
 
@@ -71,81 +71,62 @@ int		ft_strlen(const char *s)
 	return (i);
 }
 
-void free_game(t_game *game)
+void	free_game(t_game *game)
 {
-	int i;
-	
+	int	i;
+
 	if (!game)
-		return;
-	
-	// Libera le texture
+		return ;
 	i = 0;
 	while (i < 10)
 	{
 		free_texture(&game->textures[i], game->mlx.mlx);
 		i++;
 	}
-	
-	// Libera la mappa
 	free_map(&game->map);
-	
-	// Libera MLX
 	free_mlx(&game->mlx);
-	
-	// Azzera il player
 	ft_memset(&game->player, 0, sizeof(t_player));
 }
 
-// Funzione per liberare le texture
-void free_texture(t_texture *texture, void *mlx)
+void	free_texture(t_texture *texture, void *mlx)
 {
 	if (!texture || !mlx)
-		return;
-		
+		return ;
 	if (texture->img)
 	{
 		mlx_destroy_image(mlx, texture->img);
 		texture->img = NULL;
 	}
-	
 	ft_memset(texture, 0, sizeof(t_texture));
 }
-
-// Funzione per liberare MLX
 
 void	free_mlx(t_mlx *mlx)
 {
 	if (!mlx)
-		return;
-		
+		return ;
 	if (mlx->img)
 	{
 		mlx_destroy_image(mlx->mlx, mlx->img);
 		mlx->img = NULL;
 	}
-	
 	if (mlx->win)
 	{
 		mlx_destroy_window(mlx->mlx, mlx->win);
 		mlx->win = NULL;
 	}
-	
 	if (mlx->mlx)
 	{
 		free(mlx->mlx);
 		mlx->mlx = NULL;
 	}
-	
 	ft_memset(mlx, 0, sizeof(t_mlx));
 }
 
-void free_map(t_map *map)
+void	free_map(t_map *map)
 {
 	if (!map)
-		return;
-		
+		return ;
 	free_map_grid(map);
-	
 	if (map->north_texture)
 	{
 		free(map->north_texture);

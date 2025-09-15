@@ -67,8 +67,8 @@ ctypedef struct s_map {
     char *south_texture;  // ⬅️ (parse_texture() per ogni direzione)
     char *west_texture;   //
     char *east_texture;   //
-    int floor_color[3];   // ⬅️ Estratti da parse_rgb_color()
-    int ceiling_color[3]; //
+    int floor_col[3];   // ⬅️ Estratti da parse_rgb_color()
+    int sky_col[3]; //
 } t_map;
 t_player (Posizione e orientamento)
 ctypedef struct s_player {

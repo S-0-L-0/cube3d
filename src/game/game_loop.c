@@ -6,70 +6,38 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:33:46 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/05 17:03:59 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/15 17:35:55 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-// Funzione temporanea per disegnare un semplice test invece di schermo nero
-void render_test_screen(t_game *game)
+void	render_test_screen(t_game *game)
 {
-	int x, y;
-	int color;
-	char *dst;
-	
-	// Pulisci lo schermo con il colore del soffitto
-	for (y = 0; y < game->mlx.win_height; y++)
+	int		x;
+	int		y;
+	int		color;
+	char	*dst;
+
+	y = 0;
+	x = 0;
+	while (y < game->mlx.win_height)
 	{
-		for (x = 0; x < game->mlx.win_width; x++)
+		while (x < game->mlx.win_width)
 		{
-			// Calcola la posizione nel buffer dell'immagine
-			dst = game->mlx.addr + (y * game->mlx.line_length + x * (game->mlx.bits_per_pixel / 8));
-			
-			// Colore del soffitto nella parte superiore, pavimento nella parte inferiore
+			dst = game->mlx.addr + (y * game->mlx.line_length + x
+					* (game->mlx.bits_per_pixel / 8));
 			if (y < game->mlx.win_height / 2)
-			{
-				// Soffitto
-				color = (game->map.ceiling_color[0] << 16) | (game->map.ceiling_color[1] << 8) | game->map.ceiling_color[2];
-			}
+				color = (game->map.sky_col[0] << 16)
+					| (game->map.sky_col[1] << 8) | game->map.sky_col[2];
 			else
-			{
-				// Pavimento
-				color = (game->map.floor_color[0] << 16) | (game->map.floor_color[1] << 8) | game->map.floor_color[2];
-			}
-			
-			*(unsigned int*)dst = color;
+				color = (game->map.floor_col[0] << 16)
+					| (game->map.floor_col[1] << 8) | game->map.floor_col[2];
+			*(unsigned int *)dst = color;
+			x ++;
 		}
+		y ++;
 	}
-	
-	/* Disegna una croce al centro per test
-	int center_x = game->mlx.win_width / 2;
-	int center_y = game->mlx.win_height / 2;
-	
-	// Linea orizzontale
-	for (x = center_x - 20; x <= center_x + 20; x++)
-	{
-		if (x >= 0 && x < game->mlx.win_width)
-		{
-			dst = game->mlx.addr + (center_y * game->mlx.line_length + x * (game->mlx.bits_per_pixel / 8));
-			*(unsigned int*)dst = 0xFFFFFF; // Bianco
-		}
-	}
-	
-	// Linea verticale
-	for (y = center_y - 20; y <= center_y + 20; y++)
-	{
-		if (y >= 0 && y < game->mlx.win_height)
-		{
-			dst = game->mlx.addr + (y * game->mlx.line_length + center_x * (game->mlx.bits_per_pixel / 8));
-			*(unsigned int*)dst = 0xFFFFFF; // Bianco
-		}
-	}
-		*/
-	
-	// Mostra l'immagine
-	//mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 }
 
 void	drawcast(t_game *game)
@@ -77,11 +45,6 @@ void	drawcast(t_game *game)
 	int	x;
 
 	x = 0;
-	if (DEBUG)
-	{
-		draw_map_2d(game);
-		draw_player_2d(game);
-	}
 	while (x < game->mlx.win_width)
 	{
 		raycasting(game, x);
@@ -93,15 +56,14 @@ void	drawcast(t_game *game)
 	}
 }
 
-// Funzione di rendering principale
-int render_frame(t_game *game)
+int	render_frame(t_game *game)
 {
 	game->time.old_time = game->time.time;
 	game->time.time = get_time_ms();
 	game->time.frame_time = (game->time.time - game->time.old_time) / 1000.0;
-
 	update_player(game);
-	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2, game->mlx.win_height / 2);
+	mlx_mouse_move(game->mlx.mlx, game->mlx.win, game->mlx.win_width / 2,
+		game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
 	draw_torch(game);
@@ -110,63 +72,50 @@ int render_frame(t_game *game)
 	return (0);
 }
 
-#include <stdio.h>
-
-static void print_pn(void)
+static void	print_pn(void)
 {
 	printf("\033[38;5;46m");
-    printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\n");
-    printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒█\n");
-    printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒█\n");
-    printf("█▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░█\n");
-    printf("█▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░█\n");
-    printf("█░░░██████████▒▒▒░░░██████████▒▒▒█\n");
-    printf("█░░░██████████▒▒▒░░░██████████▒▒▒█\n");
-    printf("█▒▒▒██████████░░░▒▒▒██████████░░░█            ░█████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██████╗░░█████╗░███████╗████████╗\n");
-    printf("█▒▒▒██████████░░░▒▒▒██████████░░░█            ██╔══██╗██║░░░██║██╔══██╗╚════██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝\n");
-    printf("█░░░▒▒▒░░░██████████▒▒▒░░░▒▒▒░░█              ██║░░╚═╝██║░░░██║██████╦╝░█████╔╝██║░░╚═╝██████╔╝███████║█████╗░░░░░██║░░░\n");
-    printf("█░░░▒▒▒░░░██████████▒▒▒░░░▒▒▒░░█              ██║░░██╗██║░░░██║██╔══██╗░╚═══██╗██║░░██╗██╔══██╗██╔══██║██╔══╝░░░░░██║░░░\n");
-    printf("█▒▒▒░░░██████████████████▒▒▒░░░▒▒█            ╚█████╔╝╚██████╔╝██████╦╝██████╔╝╚█████╔╝██║░░██║██║░░██║██║░░░░░░░░██║░░░\n");
-    printf("█▒▒▒░░░██████████████████▒▒▒░░░▒▒█            ░╚════╝░░╚═════╝░╚═════╝░╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░░░░╚═╝░░░\n");
-    printf("█░░░▒▒▒██████████████████░░░▒▒▒░░█\n");
-    printf("█░░░▒▒▒██████████████████░░░▒▒▒░░█\n");
-    printf("█▒▒▒░░░█████░░░▒▒▒█████▒▒▒░░░▒▒█\n");
-    printf("█▒▒▒░░░█████░░░▒▒▒█████▒▒▒░░░▒▒█\n");
-    printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
-    printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
-    printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\033[0m\n");
+	printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\n");
+	printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒█\n");
+	printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒█\n");
+	printf("█▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░█\n");
+	printf("█▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░█\n");
+	printf("█░░░██████████▒▒▒░░░██████████▒▒▒█\n");
+	printf("█░░░██████████▒▒▒░░░██████████▒▒▒█\n");
+	printf("█▒▒▒██████████░░░▒▒▒██████████░░░█            ░█████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██████╗░░█████╗░███████╗████████╗\n");
+	printf("█▒▒▒██████████░░░▒▒▒██████████░░░█            ██╔══██╗██║░░░██║██╔══██╗╚════██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝\n");
+	printf("█░░░▒▒▒░░░██████████▒▒▒░░░▒▒▒░░█              ██║░░╚═╝██║░░░██║██████╦╝░█████╔╝██║░░╚═╝██████╔╝███████║█████╗░░░░░██║░░░\n");
+	printf("█░░░▒▒▒░░░██████████▒▒▒░░░▒▒▒░░█              ██║░░██╗██║░░░██║██╔══██╗░╚═══██╗██║░░██╗██╔══██╗██╔══██║██╔══╝░░░░░██║░░░\n");
+	printf("█▒▒▒░░░██████████████████▒▒▒░░░▒▒█            ╚█████╔╝╚██████╔╝██████╦╝██████╔╝╚█████╔╝██║░░██║██║░░██║██║░░░░░░░░██║░░░\n");
+	printf("█▒▒▒░░░██████████████████▒▒▒░░░▒▒█            ░╚════╝░░╚═════╝░╚═════╝░╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░░░░╚═╝░░░\n");
+	printf("█░░░▒▒▒██████████████████░░░▒▒▒░░█\n");
+	printf("█░░░▒▒▒██████████████████░░░▒▒▒░░█\n");
+	printf("█▒▒▒░░░█████░░░▒▒▒█████▒▒▒░░░▒▒█\n");
+	printf("█▒▒▒░░░█████░░░▒▒▒█████▒▒▒░░░▒▒█\n");
+	printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
+	printf("█░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒▒▒░░░▒█\n");
+	printf("███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████\033[0m\n");
 }
 
-int game_loop(t_game *game)
+int	game_loop(t_game *game)
 {
 	game->time.time = get_time_ms();
-    game->time.old_time = get_time_ms();
-    game->time.frame_time = 0;
+	game->time.old_time = get_time_ms();
+	game->time.frame_time = 0;
 	game->time.start_time = get_time_ms();
-
 	printf("Starting game loop...\n");
 	printf("Window size: %dx%d\n", game->mlx.win_width, game->mlx.win_height);
-	printf("Player position: (%.2f, %.2f)\n", game->player.pos_x, game->player.pos_y);
+	printf("Player position: (%.2f, %.2f)\n", game->player.pos_x,
+		game->player.pos_y);
 	printf("Map size: %dx%d\n", game->map.width, game->map.height);
 	print_pn();
-	
-
-	
-	// Imposta event handlers
-	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);          // Key press
-	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game); // Key release
-	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);     // Window close
+	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);
+	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game);
+	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);
 	mlx_hook(game->mlx.win, 6, 1L << 6, mouse_hook, game);
-	//mlx_loop_hook(game->mlx.mlx, render_frame, game);            // Rendering continuo
-	mlx_loop_hook(game->mlx.mlx, render_frame, game);                 // raycasting 2d
-
+	mlx_loop_hook(game->mlx.mlx, render_frame, game);
 	mlx_mouse_hide(game->mlx.mlx, game->mlx.win);
-
-
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
-	
-	// Avvia loop
 	mlx_loop(game->mlx.mlx);
-	
 	return (0);
 }
