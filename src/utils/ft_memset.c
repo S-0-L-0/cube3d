@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:33:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 16:56:59 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 11:29:02 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	free_game(t_game *game)
 	i = 0;
 	while (i < 10)
 	{
-		free_texture(&game->textures[i], game->mlx.mlx);
+		free_texture_struct(&game->textures[i], game->mlx.mlx);
 		i++;
 	}
 	free_map(&game->map);
@@ -88,7 +88,7 @@ void	free_game(t_game *game)
 	ft_memset(&game->player, 0, sizeof(t_player));
 }
 
-void	free_texture(t_texture *texture, void *mlx)
+void	free_texture_struct(t_texture *texture, void *mlx)
 {
 	if (!texture || !mlx)
 		return ;

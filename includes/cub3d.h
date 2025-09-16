@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 19:14:35 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 11:45:11 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,8 +201,9 @@ void			free_split(char **split);
 
 // parser_cleanup.c
 void			cleanup_parse_data(t_parse_data *parse);
+void			free_game_texture(t_game *game);
+void			reset_player_pos(t_game *game);
 void			cleanup_game(t_game *game);
-void			cleanup_config(t_game *game);
 void			free_map_grid(t_map *map);
 
 // init_struct.c (funzioni effettivamente utilizzate)
@@ -245,7 +246,7 @@ char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_strlen(const char *s);
 void			free_game(t_game *game);
-void			free_texture(t_texture *texture, void *mlx);
+void			free_texture_struct(t_texture *texture, void *mlx);
 void			free_mlx(t_mlx *mlx);
 void			free_map(t_map *map);
 

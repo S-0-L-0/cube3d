@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 17:00:54 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 17:11:02 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 11:29:02 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	set_textures(t_game *game)
 	{
 		printf("Error\nFailed to load south texture: %s\n",
 			game->map.south_texture);
-		free_texture(&game->textures[0], game->mlx.mlx);
+		free_texture_struct(&game->textures[0], game->mlx.mlx);
 		free_map(&game->map);
 		free_mlx(&game->mlx);
 		return (1);
@@ -98,8 +98,8 @@ int	set_textures(t_game *game)
 	{
 		printf("Error\nFailed to load west texture: %s\n",
 			game->map.west_texture);
-		free_texture(&game->textures[0], game->mlx.mlx);
-		free_texture(&game->textures[1], game->mlx.mlx);
+		free_texture_struct(&game->textures[0], game->mlx.mlx);
+		free_texture_struct(&game->textures[1], game->mlx.mlx);
 		free_map(&game->map);
 		free_mlx(&game->mlx);
 		return (1);
@@ -109,9 +109,9 @@ int	set_textures(t_game *game)
 	{
 		printf("Error\nFailed to load east texture: %s\n",
 			game->map.east_texture);
-		free_texture(&game->textures[0], game->mlx.mlx);
-		free_texture(&game->textures[1], game->mlx.mlx);
-		free_texture(&game->textures[2], game->mlx.mlx);
+		free_texture_struct(&game->textures[0], game->mlx.mlx);
+		free_texture_struct(&game->textures[1], game->mlx.mlx);
+		free_texture_struct(&game->textures[2], game->mlx.mlx);
 		free_map(&game->map);
 		free_mlx(&game->mlx);
 		return (1);
