@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 15:26:19 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 16:56:09 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,10 +199,28 @@ int				expect_comma(char *str, int *pos);
 int				extract_rgb_values(char *str, int *rgb);
 
 // parse_map.c
+int				validate_content_after_map(t_parse_data *parse, int map_end);
+int				allocate_map_grid(t_map *map, int height);
+void			cleanup_map_grid(t_map *map);
+int				copy_map_rows(t_parse_data *parse, t_map *map, int map_start);
 int				parse_map(t_parse_data *parse, t_map *map, t_player *player);
+int				find_max_width(t_map *map);
+int				validate_map_size(t_map *map);
+char			*create_padded_row(char *original_row, int current_len, int max_width);
+int				pad_all_rows(t_map *map, int max_width);
 int				normalize_map_width(t_map *map);
+int				validate_map_start(t_parse_data *parse);
+int				scan_map_end(t_parse_data *parse, int start, int *end);
+int				validate_map_height(int map_start, int map_end);
 int				find_map_boundaries(t_parse_data *parse, int *map_start,
 					int *map_end);
+void			initialize_player_data(t_player *player);
+int				handle_multiple_players(t_player *player, int i, int j);
+void			set_player_direction_vectors(t_player *player, char direction);
+int				process_player_found(t_map *map, t_player *player, 
+int				process_player_found(t_map *map, t_player *player, int i, int j, int *player_count);
+int				scan_for_player(t_map *map, t_player *player);
+int				validate_player_position(t_player *player, t_map *map);
 int				extract_player_position(t_map *map, t_player *player);
 
 // parser_map_validation.c
