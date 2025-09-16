@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 15:17:12 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 15:26:19 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,10 @@ int				flood_fill_check(t_map *map, t_player *player);
 int				flood_fill_recursive(t_map *map, int **visited, int x, int y);
 
 // parser_utils.c
+int				validate_dimensions(int height, int width);
+int				**allocate_rows_array(int height);
+void			cleanup_partial_array(int **array, int allocated_rows);
+int				*allocate_and_initialize_row(int width, int **array, int row_index);
 int				**allocate_2d_int_array(int height, int width);
 void			free_2d_int_array(int **array, int height);
 void			free_split(char **split);
