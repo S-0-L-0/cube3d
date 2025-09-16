@@ -6,42 +6,11 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:33:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 11:29:02 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 00:57:43 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	unsigned char	*ptr;
-
-	ptr = (unsigned char *) b;
-	while (len-- > 0)
-	{
-		*ptr = (unsigned char) c;
-		ptr ++;
-	}
-	return (b);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*s2;
-	size_t	i;
-
-	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (!s2)
-		return (0);
-	i = 0;
-	while (s1[i])
-	{
-		s2[i] = s1[i];
-		i ++;
-	}
-	s2[i] = '\0';
-	return (s2);
-}
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -86,40 +55,6 @@ void	free_game(t_game *game)
 	free_map(&game->map);
 	free_mlx(&game->mlx);
 	ft_memset(&game->player, 0, sizeof(t_player));
-}
-
-void	free_texture_struct(t_texture *texture, void *mlx)
-{
-	if (!texture || !mlx)
-		return ;
-	if (texture->img)
-	{
-		mlx_destroy_image(mlx, texture->img);
-		texture->img = NULL;
-	}
-	ft_memset(texture, 0, sizeof(t_texture));
-}
-
-void	free_mlx(t_mlx *mlx)
-{
-	if (!mlx)
-		return ;
-	if (mlx->img)
-	{
-		mlx_destroy_image(mlx->mlx, mlx->img);
-		mlx->img = NULL;
-	}
-	if (mlx->win)
-	{
-		mlx_destroy_window(mlx->mlx, mlx->win);
-		mlx->win = NULL;
-	}
-	if (mlx->mlx)
-	{
-		free(mlx->mlx);
-		mlx->mlx = NULL;
-	}
-	ft_memset(mlx, 0, sizeof(t_mlx));
 }
 
 void	free_map(t_map *map)

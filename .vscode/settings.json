@@ -1,5 +1,7 @@
 {
-    "files.associations": {
-        "stdlib.h": "c"
-    }
+  "files.associations": {
+    "*.dbclient-js": "javascript",
+    "stdlib.h": "c",
+    "cub3d.h": "c"
+  }
 }

@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 18:05:07 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 23:53:33 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ int				set_textures(t_game *game);
 // parser_validation.c
 int				validate_arguments(int argc, char **argv);
 int				open_and_validate_file(char *filepath);
+int				file_exists(char *path);
 int				validate_texture_file(char *path, char *texture_name);
 
 // parser_file.c
