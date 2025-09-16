@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:33:46 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/15 20:05:11 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 17:42:23 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void	print_pn(void)
 	{
 		printf("\033[38;5;46m");
 		printf("%s", line);
+		free(line);
 		line = get_next_line(fd);
 	}
 }

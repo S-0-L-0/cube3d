@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 16:56:09 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 17:39:36 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,20 @@ typedef struct s_game
 
 // Main functions
 
+int				validate_and_initialize_mlx_struct(t_mlx *mlx);
+int				create_mlx_connection(t_mlx *mlx);
+int				create_window(t_mlx *mlx);
+int				create_image(t_mlx *mlx);
+int				setup_image_data(t_mlx *mlx);
+int				init_mlx(t_mlx *mlx);
 char			*get_next_line(int fd);
 int				parser(int argc, char **argv, t_game *game,
 					t_parse_data *parse);
+int				init_texture(t_texture *texture, char *texture_path, void *mlx);
+char			*get_texture_path(t_game *game, int index);
+char			*get_error_texture_name(int index);
+void			cleanup_loaded_textures(t_game *game, int loaded_count);
+int				load_single_texture(t_game *game, int index);
 int				set_textures(t_game *game);
 
 // parser_validation.c
@@ -217,7 +228,6 @@ int				find_map_boundaries(t_parse_data *parse, int *map_start,
 void			initialize_player_data(t_player *player);
 int				handle_multiple_players(t_player *player, int i, int j);
 void			set_player_direction_vectors(t_player *player, char direction);
-int				process_player_found(t_map *map, t_player *player, 
 int				process_player_found(t_map *map, t_player *player, int i, int j, int *player_count);
 int				scan_for_player(t_map *map, t_player *player);
 int				validate_player_position(t_player *player, t_map *map);
@@ -247,7 +257,6 @@ void			free_map_grid(t_map *map);
 
 // init_struct.c (funzioni effettivamente utilizzate)
 int				init_texture(t_texture *texture, char *texture_path, void *mlx);
-int				init_mlx(t_mlx *mlx);
 void			free_mlx(t_mlx *mlx);
 void			free_game(t_game *game);
 
