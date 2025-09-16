@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 17:39:36 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 18:05:07 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ int				find_map_boundaries(t_parse_data *parse, int *map_start,
 void			initialize_player_data(t_player *player);
 int				handle_multiple_players(t_player *player, int i, int j);
 void			set_player_direction_vectors(t_player *player, char direction);
-int				process_player_found(t_map *map, t_player *player, int i, int j, int *player_count);
+int				process_player_found(t_map *map, t_player *player, int i, int j);
 int				scan_for_player(t_map *map, t_player *player);
 int				validate_player_position(t_player *player, t_map *map);
 int				extract_player_position(t_map *map, t_player *player);

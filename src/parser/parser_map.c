@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 16:55:22 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 18:05:46 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,18 +312,14 @@ void	set_player_direction_vectors(t_player *player, char direction)
 	}
 }
 
-int	process_player_found(t_map *map, t_player *player, int i, int j, int *player_count)
+int	process_player_found(t_map *map, t_player *player, int i, int j)
 {
 	char	c;
 
-	if (*player_count > 0)
-		return (handle_multiple_players(player, i, j));
-	
 	c = map->grid[i][j];
 	player->pos_x = (double)j + 0.5;
 	player->pos_y = (double)i + 0.5;
 	player->direction = c;
-	(*player_count)++;
 	set_player_direction_vectors(player, c);
 	map->grid[i][j] = '0';
 	return (0);
@@ -336,23 +332,25 @@ int	scan_for_player(t_map *map, t_player *player)
 	int		player_count;
 
 	player_count = 0;
-	i = 0;
-	while (i < map->height)
+	i = -1;
+	while (++i < map->height)
 	{
 		j = 0;
 		while (j < map->width)
 		{
 			if (is_player_character(map->grid[i][j]))
 			{
-				if (process_player_found(map, player, i, j, &player_count) != 0)
+				if (player_count > 0)
+					return (handle_multiple_players(player, i, j));
+				if (process_player_found(map, player, i, j) != 0)
 					return (1);
+				player_count++;
 			}
 			j++;
 		}
-		i++;
 	}
 	if (player_count == 0)
-		return (printf("Error\nNo player start_position found in map\n"), 1);
+		return (printf("Error\nNo player starting position found\n"), 1);
 	return (0);
 }
 
