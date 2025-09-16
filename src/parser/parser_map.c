@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:56 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 18:05:46 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 18:07:56 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,12 +255,9 @@ int	find_map_boundaries(t_parse_data *parse, int *map_start, int *map_end)
 {
 	if (validate_map_start(parse) != 0)
 		return (1);
-	
 	*map_start = parse->map_start_line;
-	
 	if (scan_map_end(parse, *map_start, map_end) != 0)
 		return (1);
-	
 	return (validate_map_height(*map_start, *map_end));
 }
 

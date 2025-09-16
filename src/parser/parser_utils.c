@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:11:51 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 15:24:28 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 18:14:37 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ int	**allocate_2d_int_array(int height, int width)
 
 	if (validate_dimensions(height, width) != 0)
 		return (NULL);
-	
 	array = allocate_rows_array(height);
 	if (!array)
 		return (NULL);
-	
 	i = 0;
 	while (i < height)
 	{
