@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 11:45:11 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 14:07:30 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,11 @@ typedef struct s_game
 }	t_game;
 
 // Main functions
-void			init_game(t_game *game);
+
 char			*get_next_line(int fd);
 int				parser(int argc, char **argv, t_game *game,
 					t_parse_data *parse);
 int				set_textures(t_game *game);
-int				init_texture(t_texture *texture, char *texture_path, void *mlx);
 
 // parser_validation.c
 int				validate_arguments(int argc, char **argv);
@@ -172,10 +171,28 @@ int				is_empty_line(char *line);
 int				is_map_line(char *line);
 
 // parser_config.c
+int				process_config_line(t_parse_data *parse, t_map *map, int line_index);
 int				parse_config_elements(t_parse_data *parse, t_map *map);
+int				get_texture_type_index(char *line);
+char			*get_texture_identifier(int type_index);
+char			**get_texture_destination(int type_index, t_map *map);
+int				*get_loaded_flag(int type_index, t_parse_data *parse);
+char			*extract_and_clean_path(char *path_start, char *identifier);
+int				store_texture_path(char *line, int type_index, t_map *map, t_parse_data *parse);
 int				parse_texture_line(char *line, t_map *map, t_parse_data *parse);
+int				get_color_type_index(char *line);
+char			*get_color_identifier(int type_index);
+int				*get_color_destination(int type_index, t_map *map);
+int				*get_color_loaded_flag(int type_index, t_parse_data *parse);
+int				check_duplicate_color(int type_index, t_parse_data *parse);
+int				process_color_values(char *color_values, int type_index, t_map *map, t_parse_data *parse);
 int				parse_color_line(char *line, t_map *map, t_parse_data *parse);
+int				validate_config_vertical(int error, t_map *map);
+int				validate_config_horizontal(int error, t_map *map);
 int				validate_config_complete(t_map *map, t_parse_data *parse);
+int	parse_single_rgb_value(char *str, int *pos);
+int	expect_comma(char *str, int *pos);
+
 int				extract_rgb_values(char *str, int *rgb);
 
 // parse_map.c
@@ -193,8 +210,6 @@ int				flood_fill_recursive(t_map *map, int **visited, int x, int y);
 int				check_map_borders(t_map *map);
 
 // parser_utils.c
-char			**ft_split_whitespace(char *str);
-char			*trim_spaces(char *str);
 int				**allocate_2d_int_array(int height, int width);
 void			free_2d_int_array(int **array, int height);
 void			free_split(char **split);
@@ -207,16 +222,12 @@ void			cleanup_game(t_game *game);
 void			free_map_grid(t_map *map);
 
 // init_struct.c (funzioni effettivamente utilizzate)
-int				parse_complete_file(char *map_path, t_map *map,
-					t_player *player);
 int				init_texture(t_texture *texture, char *texture_path, void *mlx);
 int				init_mlx(t_mlx *mlx);
 void			free_mlx(t_mlx *mlx);
 void			free_game(t_game *game);
 
 // game_loop.c
-int				key_press(int keycode, t_game *game);
-int				close_window(t_game *game);
 int				game_loop(t_game *game);
 
 // raycasting.c
@@ -245,14 +256,8 @@ void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_strlen(const char *s);
-void			free_game(t_game *game);
 void			free_texture_struct(t_texture *texture, void *mlx);
-void			free_mlx(t_mlx *mlx);
 void			free_map(t_map *map);
-
-// 2d.c
-void			draw_map_2d(t_game *game);
-void			draw_player_2d(t_game *game);
 
 // minimap.c
 void			draw_minimap(t_game *game);

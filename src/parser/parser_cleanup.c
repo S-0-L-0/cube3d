@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:12:17 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 11:45:07 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 12:36:56 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	cleanup_game(t_game *game)
 		free(game->map.grid);
 		game->map.grid = NULL;
 	}
-	free_game_texture(&game);
+	free_game_texture(game);
 	game->map.width = 0;
 	game->map.height = 0;
 	i = 0;
