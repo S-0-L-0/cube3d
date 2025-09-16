@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/16 14:07:30 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/16 15:17:12 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,10 @@ int				open_and_validate_file(char *filepath);
 int				validate_texture_file(char *path, char *texture_name);
 
 // parser_file.c
+int				allocate_file_content(t_parse_data *parse);
+char			*remove_newline(char *line);
+int				handle_file_too_large(char *line, t_parse_data *parse, int line_count);
+int				read_lines_from_file(int fd, t_parse_data *parse);
 int				read_file_content(int fd, t_parse_data *parse);
 int				is_empty_line(char *line);
 int				is_map_line(char *line);
@@ -190,9 +194,8 @@ int				parse_color_line(char *line, t_map *map, t_parse_data *parse);
 int				validate_config_vertical(int error, t_map *map);
 int				validate_config_horizontal(int error, t_map *map);
 int				validate_config_complete(t_map *map, t_parse_data *parse);
-int	parse_single_rgb_value(char *str, int *pos);
-int	expect_comma(char *str, int *pos);
-
+int				parse_single_rgb_value(char *str, int *pos);
+int				expect_comma(char *str, int *pos);
 int				extract_rgb_values(char *str, int *rgb);
 
 // parse_map.c
@@ -207,7 +210,6 @@ int				validate_map(t_map *map, t_player *player);
 int				validate_map_characters(t_map *map);
 int				flood_fill_check(t_map *map, t_player *player);
 int				flood_fill_recursive(t_map *map, int **visited, int x, int y);
-int				check_map_borders(t_map *map);
 
 // parser_utils.c
 int				**allocate_2d_int_array(int height, int width);
