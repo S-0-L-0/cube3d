@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:24:29 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 00:53:50 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 14:48:26 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	validate_map_characters(t_map *map)
 		while (j < map->width)
 		{
 			c = map->grid[i][j];
-			if (c != '0' && c != '1' && c != ' ')
+			if (c != '0' && c != '1' && c != ' ' && c != 'D')
 			{
 				printf("Error\nInvalid character '%c' line:row [%d,%d]\n",
 					c, i, j);
