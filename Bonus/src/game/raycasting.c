@@ -43,7 +43,7 @@ void	draw_wall_slice(t_game *game, int screen_x)
 	texture_pos = (game->render.draw_start - game->mlx.win_height / 2
 			+ game->render.line_height / 2) * step;
 	y = game->render.draw_start;
-	while (y < game->render.draw_end)
+	while (y <= game->render.draw_end)
 	{
 		texture_y = (int)texture_pos & (game->render.texture->height - 1);
 		texture_pos += step;
