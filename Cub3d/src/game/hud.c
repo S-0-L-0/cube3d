@@ -69,9 +69,7 @@ void	draw_torch(t_game *game)
 	int	start_y;
 
 	num = get_torch_frame_index(game);
-	start_x = (game->mlx.win_width / 2) - (game->textures[num].width / 2)
-		+ (game->mlx.win_width / 3) - (game->textures[num].width / 3);
-	start_y = (game->mlx.win_height / 2) - (game->textures[num].height / 2)
-		+ (game->mlx.win_height / 1.5) - (game->textures[num].height / 1.5);
+	start_x = (3 * (game->mlx.win_width - game->textures[num].width)) / 4;
+	start_y = game->mlx.win_height - game->textures[num].height + 96;
 	draw_texture(game, &game->textures[num], start_x, start_y);
 }
