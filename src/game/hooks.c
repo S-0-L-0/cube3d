@@ -34,42 +34,9 @@ int	key_press(int keycode, t_game *game)
 		free_game(game);
 		exit(0);
 	}
-	if (keycode == 119)
-	{
-		printf("W pressed\n");
-		game->keys.w = true;
-	}
-	if (keycode == 115)
-	{
-		printf("S pressed\n");
-		game->keys.s = true;
-	}
-	if (keycode == 97)
-	{
-		printf("A pressed\n");
-		game->keys.a = true;
-	}
-	if (keycode == 100)
-	{
-		printf("D pressed\n");
-		game->keys.d = true;
-	}
-	else if (keycode == 65361)
-	{
-		printf("Left arrow pressed\n");
-		game->keys.left = true;
-	}
-	else if (keycode == 65363)
-	{
-		printf("Right arrow pressed\n");
-		game->keys.right = true;
-	}
-	if (keycode == 101)
-	{
-		mlx_string_put(game->mlx.mlx, game->mlx.win,
-			100, 100, 0xFFFFFF, "Press E");
-		toggle_door(game);
-	}
+	handle_move(keycode, game);
+	handle_arrows(keycode, game);
+	handle_actions(keycode, game);
 	return (0);
 }
 

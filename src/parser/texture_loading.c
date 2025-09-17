@@ -36,7 +36,6 @@ char	*get_texture_path(t_game *game, int index)
 		return ("assets/textures/torch70_5.xpm");
 	else if (index == 10)
 		return ("assets/textures/door.xpm");
-
 	return (NULL);
 }
 
