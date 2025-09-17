@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:24:18 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 14:46:52 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 16:58:46 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ int	is_map_line(char *line)
 	{
 		if (line[i] != '0' && line[i] != '1' && line[i] != ' '
 			&& line[i] != '\t' && line[i] != 'N' && line[i] != 'S'
-			&& line[i] != 'E' && line[i] != 'W' && line[i] != 'D')
+			&& line[i] != 'E' && line[i] != 'W')
 		{
 			return (0);
 		}
 		if (line[i] == '0' || line[i] == '1' || line[i] == 'N'
 			|| line[i] == 'S' || line[i] == 'E'
-			|| line[i] == 'W' || line[i] != 'D')
+			|| line[i] == 'W')
 		{
 			has_map_char = 1;
 		}
