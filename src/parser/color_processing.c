@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:23:51 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 13:53:45 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 14:00:12 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,7 @@ int	process_color_values(char *color_values, int type_index, t_map *map,
 	}
 	dest_color = get_color_destination(type_index, map);
 	if (extract_rgb_values(color_values, dest_color) != 0)
-	{
-		printf("Error\nInvalid RGB format for %s color\n",
-			get_color_identifier(type_index));
 		return (1);
-	}
 	loaded_flag = get_color_loaded_flag(type_index, parse);
 	*loaded_flag = 1;
 	return (0);

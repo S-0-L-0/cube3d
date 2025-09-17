@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:24:50 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 00:41:41 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 14:01:15 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	parse_single_rgb_value(char *str, int *pos)
 		(*pos)++;
 	if (!has_digit)
 	{
-		printf("Error\nEmpty RGB component\n");
+		printf("Error\nWrong RGB component\n");
 		return (-1);
 	}
 	return (value);
