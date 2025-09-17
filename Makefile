@@ -16,8 +16,8 @@ CFILES = \
 			src/game/dda.c \
 			src/utils/utils.c \
 			src/utils/more_utils.c \
-			src/utils/get_next_lime/get_next_line.c\
-			src/utils/get_next_lime/get_next_line_utils.c \
+			src/utils/get_next_line/get_next_line.c\
+			src/utils/get_next_line/get_next_line_utils.c \
 			src/parser/mlx_initialization.c \
 			src/parser/mlx_setup.c \
 			src/parser/file_operations.c \
