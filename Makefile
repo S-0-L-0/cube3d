@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3D
 
 CFILES = \
 			Cub3d/src/main.c \
@@ -88,22 +88,21 @@ BONUS_FILE = \
 			Bonus/src/parser/memory_management.c \
 			Bonus/src/parser/game_cleanup.c
 
-OBJ = $(CFILES:.c=.o)
-BONUS_OBJ = $(BONUS_FILE:.c=.o)
+ifeq ($(WITH_BONUS),1)
+  SRCS := $(BONUS_FILE)
+else
+  SRCS := $(CFILES)
+endif
+OBJ := $(SRCS:.c=.o)
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -I./Cub3d/includes -I./Bonus/includes -I./mlx_linux
-
 LIBS = -L./mlx_linux -lmlx -lXext -lX11 -lm
-
 RM = rm -f
 
 MLX_DIR = ./mlx_linux
 MLX_LIB = $(MLX_DIR)/libmlx.a
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: all clean fclean re bonus
 
@@ -115,12 +114,14 @@ $(MLX_LIB):
 $(NAME): $(OBJ) $(MLX_LIB)
 	$(CC) $(OBJ) $(LIBS) -o $(NAME)
 
-# --- BONUS ---
-bonus: $(BONUS_OBJ) $(MLX_LIB)
-	$(CC) $(BONUS_OBJ) $(LIBS) -o $(NAME)
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+bonus:
+	$(MAKE) WITH_BONUS=1 all
 
 clean:
-	$(RM) $(OBJ) $(BONUS_OBJ)
+	$(RM) $(CFILES:.c=.o) $(BONUS_FILE:.c=.o)
 	@if [ -d "$(MLX_DIR)" ]; then $(MAKE) -C $(MLX_DIR) clean; fi
 
 fclean: clean
