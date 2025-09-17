@@ -24,7 +24,7 @@
 # include <stdbool.h>
 # include "../mlx_linux/mlx.h"
 
-# define BONUS 1
+# define BONUS 0
 # define TILE_SIZE 12
 # define VIEW_RADIUS 5
 # define MINIMAP_DIM 11

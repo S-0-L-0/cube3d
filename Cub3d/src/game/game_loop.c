@@ -67,10 +67,12 @@ int	render_frame(t_game *game)
 		game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
-	draw_torch(game);
+	if (BONUS)
+		draw_torch(game);
 	draw_crosshair(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
-	check_door(game);
+	if (BONUS)
+		check_door(game);
 	return (0);
 }
 
@@ -105,7 +107,8 @@ int	game_loop(t_game *game)
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game);
 	mlx_hook(game->mlx.win, 17, 1L << 17, close_window, game);
-	mlx_hook(game->mlx.win, 6, 1L << 6, mouse_hook, game);
+	if (BONUS)
+		mlx_hook(game->mlx.win, 6, 1L << 6, mouse_hook, game);
 	mlx_loop_hook(game->mlx.mlx, render_frame, game);
 	mlx_mouse_hide(game->mlx.mlx, game->mlx.win);
 	printf("Press ESC to quit, W/A/S/D to test movement\n");
