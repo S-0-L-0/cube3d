@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:05:34 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 13:39:27 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/17 16:17:44 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ typedef struct s_game
 	t_player	player;
 	t_mlx		mlx;
 	t_ray		ray;
-	t_texture	textures[16];
+	t_texture	textures[11];
 	t_keys		keys;
 	t_time		time;
 	t_render	render;
@@ -287,6 +287,9 @@ int				mouse_hook(int x, int y, t_game *game);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_window(t_game *game);
+void			handle_move(int keycode, t_game *game);
+void			handle_arrows(int keycode, t_game *game);
+void			handle_actions(int keycode, t_game *game);
 
 // utils.c
 long long		get_time_ms(void);

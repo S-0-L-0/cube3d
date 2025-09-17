@@ -11,6 +11,9 @@ CFILES = \
 			src/game/minimap.c \
 			src/game/hud.c \
 			src/game/door.c \
+			src/game/hook_help.c \
+			src/game/ray_help.c \
+			src/game/dda.c \
 			src/utils/utils.c \
 			src/utils/more_utils.c \
 			src/utils/get_next_lime/get_next_line.c\
@@ -40,8 +43,6 @@ CFILES = \
 			src/parser/2d_array_operations.c \
 			src/parser/memory_management.c \
 			src/parser/game_cleanup.c \
-			src/game/ray_help.c \
-			src/game/dda.c
 
 OBJ = $(CFILES:.c=.o)
 CC = gcc
