@@ -46,11 +46,6 @@ void	drawcast(t_game *game)
 	int	x;
 
 	x = 0;
-	if (DEBUG)
-	{
-		draw_map_2d(game);
-		draw_player_2d(game);
-	}
 	while (x < game->mlx.win_width)
 	{
 		raycasting(game, x);
@@ -72,11 +67,8 @@ int	render_frame(t_game *game)
 		game->mlx.win_height / 2);
 	render_test_screen(game);
 	drawcast(game);
-	if (!DEBUG)
-	{
-		draw_torch(game);
-		draw_crosshair(game);
-	}
+	draw_torch(game);
+	draw_crosshair(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
 	check_door(game);
 	return (0);

@@ -66,7 +66,8 @@ int	key_press(int keycode, t_game *game)
 	}
 	if (keycode == 101)
 	{
-		mlx_string_put(game->mlx.mlx, game->mlx.win, 100, 100, 0xFFFFFF, "Press E");
+		mlx_string_put(game->mlx.mlx, game->mlx.win,
+			100, 100, 0xFFFFFF, "Press E");
 		toggle_door(game);
 	}
 	return (0);

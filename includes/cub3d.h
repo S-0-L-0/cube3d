@@ -25,7 +25,6 @@
 # include "../mlx_linux/mlx.h"
 
 # define BONUS 1
-# define DEBUG 0
 # define TILE_SIZE 12
 # define VIEW_RADIUS 5
 # define MINIMAP_DIM 11
@@ -293,8 +292,7 @@ int				close_window(t_game *game);
 long long		get_time_ms(void);
 unsigned int	get_pixel_color(t_texture *texture, int x, int y);
 void			put_pixel(t_game *game, int x, int y, int color);
-void			draw_circle(t_game *game, int cx, int cy, int radius,
-					int color);
+void			draw_circle(t_game *game, int cx, int cy, int radius);
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -313,5 +311,14 @@ void			draw_torch(t_game *game);
 // door.c
 void			toggle_door(t_game *game);
 void			check_door(t_game *game);
+
+// ray_help.c
+void			calculate_perp_dist(t_game *game, int side);
+void			init_render_params(t_game *game);
+void			init_steps(t_game *game);
+void			init_ray(t_game *game, int screen_x);
+
+// dda.c
+int				dda(t_game *game);
 
 #endif

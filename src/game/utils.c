@@ -45,7 +45,7 @@ void	put_pixel(t_game *game, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	draw_circle(t_game *game, int cx, int cy, int radius, int color)
+void	draw_circle(t_game *game, int cx, int cy, int radius)
 {
 	int	x;
 	int	y;
@@ -59,7 +59,7 @@ void	draw_circle(t_game *game, int cx, int cy, int radius, int color)
 		while (x <= radius)
 		{
 			if (x * x + y * y <= r2)
-				put_pixel(game, cx + x, cy + y, color);
+				put_pixel(game, cx + x, cy + y, 0xFFFFFF);
 			x++;
 		}
 		y++;

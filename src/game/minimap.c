@@ -55,7 +55,7 @@ static void	draw_player_on_minimap(t_game *game)
 
 	player_pixel_x = VIEW_RADIUS * TILE_SIZE + TILE_SIZE / 2;
 	player_pixel_y = VIEW_RADIUS * TILE_SIZE + TILE_SIZE / 2;
-	draw_circle(game, player_pixel_x, player_pixel_y, 3, 0xFFFFFF);
+	draw_circle(game, player_pixel_x, player_pixel_y, 3);
 }
 
 void	draw_minimap(t_game *game)

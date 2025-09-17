@@ -37,7 +37,7 @@ int	set_textures(t_game *game)
 	int	i;
 
 	i = 0;
-	while (i < 10)
+	while (i <= 10)
 	{
 		if (load_single_texture(game, i) != 0)
 			return (1);

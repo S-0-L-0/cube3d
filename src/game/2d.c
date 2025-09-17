@@ -59,5 +59,5 @@ void	draw_player_2d(t_game *game)
 
 	player_screen_x = (int)(game->player.pos_x * 32);
 	player_screen_y = (int)(game->player.pos_y * 32);
-	draw_circle(game, player_screen_x, player_screen_y, 2, 0x0000FF);
+	draw_circle(game, player_screen_x, player_screen_y, 2);
 }

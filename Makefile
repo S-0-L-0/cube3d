@@ -40,6 +40,8 @@ CFILES = \
 			src/parser/2d_array_operations.c \
 			src/parser/memory_management.c \
 			src/parser/game_cleanup.c \
+			src/game/ray_help.c \
+			src/game/dda.c
 
 OBJ = $(CFILES:.c=.o)
 CC = gcc
