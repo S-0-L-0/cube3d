@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:24:21 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 00:49:31 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/18 15:46:11 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int	validate_map_height(int map_start, int map_end)
 		printf("Error\nMap too small (minimum 3 rows)\n");
 		return (1);
 	}
-	if (height > 999994)
+	if (height > 2147483641)
 	{
-		printf("Error\nMap too large (maximum 999994 rows)\n");
+		printf("Error\nMap too large (maximum 2147483641 rows)\n");
 		printf("Current map has %d rows\n", height);
 		return (1);
 	}

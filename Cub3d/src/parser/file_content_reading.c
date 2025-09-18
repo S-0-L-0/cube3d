@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:24:04 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 00:29:36 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/18 15:45:46 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	allocate_file_content(t_parse_data *parse)
 {
-	parse->file_content = (char **)malloc(sizeof(char *) * 100000);
+	parse->file_content = (char **)malloc(sizeof(char *) * 2147483647);
 	if (!parse->file_content)
 	{
 		printf("Error\nMemory allocation failed\n");
@@ -37,7 +37,7 @@ char	*remove_newline(char *line)
 
 int	handle_file_too_large(char *line, t_parse_data *parse, int line_count)
 {
-	printf("Error\nFile too large (maximum 100000 lines)\n");
+	printf("Error\nFile too large (maximum 2147483647 lines)\n");
 	free(line);
 	while (line_count > 0)
 	{
@@ -56,7 +56,7 @@ int	read_lines_from_file(int fd, t_parse_data *parse)
 
 	line_count = 0;
 	line = get_next_line(fd);
-	while (line != NULL && line_count < 100000)
+	while (line != NULL && line_count < 2147483647)
 	{
 		line = remove_newline(line);
 		parse->file_content[line_count] = line;

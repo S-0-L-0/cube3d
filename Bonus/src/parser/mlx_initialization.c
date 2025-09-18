@@ -6,7 +6,7 @@
 /*   By: edforte <edforte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:23:20 by edforte           #+#    #+#             */
-/*   Updated: 2025/09/17 13:53:31 by edforte          ###   ########.fr       */
+/*   Updated: 2025/09/18 15:43:11 by edforte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	validate_and_initialize_mlx_struct(t_mlx *mlx)
 	if (!mlx)
 		return (1);
 	memset(mlx, 0, sizeof(t_mlx));
-	mlx->win_width = 1280;
-	mlx->win_height = 960;
+	mlx->win_width = 1400;
+	mlx->win_height = 1050;
 	return (0);
 }
 
